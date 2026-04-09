@@ -1,0 +1,716 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin><link rel="preconnect" href="https://unpkg.com" crossorigin><link rel="preconnect" href="https://cdn.bootcdn.net" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>python3 多线程编程指南 - Sai's blog</title>
+
+  
+    <meta name="description" content="python3 多线程编程指南">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python3 多线程编程指南">
+<meta property="og:url" content="https://sai.thissai.com/2026/02/09/536/index.html">
+<meta property="og:site_name" content="Sai&#39;s blog">
+<meta property="og:description" content="python3 多线程编程指南">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-02-09T07:48:17.000Z">
+<meta property="article:modified_time" content="2026-04-09T10:50:41.776Z">
+<meta property="article:author" content="Sai Wang">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="python3,多线程">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+
+  
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/xaoxuu/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/xaoxuu/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/xaoxuu/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/xaoxuu/favicon/site.webmanifest"><link rel="shortcut icon" href="/assets/xaoxuu/favicon/favicon.ico"><meta name="theme-color" content="#f8f8f8"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.min.css" media="all" />
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><div class="icon"><img no-lazy class="icon" src="/assets/icon.svg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></div><a class="title" href="/"><div class="main" ff="title">sai blog</div><div class="sub cap">分享技术知识</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="php-frame" href="/categories/phpframe/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="go example" href="/categories/goexample/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="about" href="/about/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/02/09/536/"><span class="title">python3 多线程编程指南</span></a><a class="item title" href="/2026/04/09/535/"><span class="title">bash 污染与清理：原理、实战与防御</span></a><a class="item title" href="/2019/11/20/Nginx9/"><span class="title">Nginx添加lua-nginx模块</span></a><a class="item title" href="/2019/11/22/Nginx6/"><span class="title">Nginx配置常用参数</span></a><a class="item title" href="/2018/10/19/Nginx4/"><span class="title">nginx健康检查</span></a><a class="item title" href="/2020/02/08/phpframe06/"><span class="title">框架篇：3.路由解析</span></a><a class="item title" href="/2025/07/07/224/"><span class="title">Laravel限流Redis throttle</span></a><a class="item title" href="/2021/03/08/base/"><span class="title">Redis基础类型、常用知识</span></a><a class="item title" href="/2026/01/29/533/"><span class="title">服务器直传文件到slack</span></a><a class="item title" href="/2026/01/24/532/"><span class="title">使用本地 SSH Key 实现服务器之间直接传输文件</span></a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/python3/">python3</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-02-09T07:48:17.000Z">2026-02-09</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-04-09T10:50:41.776Z">2026-04-09</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>python3 多线程编程指南</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h1 id="Python3-多线程编程指南"><a href="#Python3-多线程编程指南" class="headerlink" title="Python3 多线程编程指南"></a>Python3 多线程编程指南</h1><h2 id="一、什么是线程？"><a href="#一、什么是线程？" class="headerlink" title="一、什么是线程？"></a>一、什么是线程？</h2><p><strong>进程</strong>是操作系统分配资源的基本单位，<strong>线程</strong>是进程内的执行单元。一个进程可以包<br>含多个线程，它们共享进程的内存空间，切换开销远小于进程。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">进程</span><br><span class="line">├── 线程 1 （主线程）</span><br><span class="line">├── 线程 2</span><br><span class="line">└── 线程 3</span><br></pre></td></tr></table></figure>
+
+<p>多线程适合的场景：</p>
+<ul>
+<li><strong>I/O 密集型任务</strong>：网络请求、文件读写、数据库查询 — 线程等待 I/O 时 CPU 可以<br>切换执行其他线程</li>
+<li><strong>不适合 CPU 密集型任务</strong>：由于 GIL 的存在，Python 多线程无法真正并行执行计算<br>密集型代码（应使用 <code>multiprocessing</code>）</li>
+</ul>
+<hr>
+<h2 id="二、GIL：Python-多线程的核心限制"><a href="#二、GIL：Python-多线程的核心限制" class="headerlink" title="二、GIL：Python 多线程的核心限制"></a>二、GIL：Python 多线程的核心限制</h2><p>GIL（Global Interpreter Lock，全局解释器锁）是 CPython 解释器的一把全局锁，<strong>同<br>一时刻只允许一个线程执行 Python 字节码</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">时间轴：</span><br><span class="line">线程 A ██████░░░░██████░░░░</span><br><span class="line">线程 B ░░░░██████░░░░██████</span><br><span class="line">        ↑交替执行，并非真正并行</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>多线程效果</th>
+<th>推荐方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>网络请求、文件 I/O</td>
+<td>显著提速</td>
+<td><code>threading</code></td>
+</tr>
+<tr>
+<td>数学计算、图像处理</td>
+<td>几乎无提速</td>
+<td><code>multiprocessing</code></td>
+</tr>
+<tr>
+<td>异步 I/O</td>
+<td>更低开销</td>
+<td><code>asyncio</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="三、基础用法"><a href="#三、基础用法" class="headerlink" title="三、基础用法"></a>三、基础用法</h2><h3 id="3-1-创建线程"><a href="#3-1-创建线程" class="headerlink" title="3.1 创建线程"></a>3.1 创建线程</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">worker</span>(<span class="params">name, delay</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[<span class="subst">&#123;name&#125;</span>] 开始&quot;</span>)</span><br><span class="line">    time.sleep(delay)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[<span class="subst">&#123;name&#125;</span>] 完成，耗时 <span class="subst">&#123;delay&#125;</span>s&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式一：直接传入函数</span></span><br><span class="line">t1 = threading.Thread(target=worker, args=(<span class="string">&quot;线程A&quot;</span>, <span class="number">2</span>))</span><br><span class="line">t2 = threading.Thread(target=worker, args=(<span class="string">&quot;线程B&quot;</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">t1.start()</span><br><span class="line">t2.start()</span><br><span class="line"></span><br><span class="line">t1.join()  <span class="comment"># 等待 t1 完成</span></span><br><span class="line">t2.join()  <span class="comment"># 等待 t2 完成</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;所有线程完成&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[线程A] 开始</span><br><span class="line">[线程B] 开始</span><br><span class="line">[线程B] 完成，耗时 1s</span><br><span class="line">[线程A] 完成，耗时 2s</span><br><span class="line">所有线程完成</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-继承-Thread-类"><a href="#3-2-继承-Thread-类" class="headerlink" title="3.2 继承 Thread 类"></a>3.2 继承 Thread 类</h3><p>适合逻辑复杂、需要封装状态的场景：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DownloadThread</span>(threading.Thread):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, url</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="variable language_">self</span>.url = url</span><br><span class="line">        <span class="variable language_">self</span>.result = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;开始下载: <span class="subst">&#123;self.url&#125;</span>&quot;</span>)</span><br><span class="line">        time.sleep(<span class="number">1</span>)  <span class="comment"># 模拟网络请求</span></span><br><span class="line">        <span class="variable language_">self</span>.result = <span class="string">f&quot;<span class="subst">&#123;self.url&#125;</span> 的内容&quot;</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;完成下载: <span class="subst">&#123;self.url&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">threads = [</span><br><span class="line">    DownloadThread(<span class="string">&quot;https://example.com/file1&quot;</span>),</span><br><span class="line">    DownloadThread(<span class="string">&quot;https://example.com/file2&quot;</span>),</span><br><span class="line">    DownloadThread(<span class="string">&quot;https://example.com/file3&quot;</span>),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">    t.start()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">    t.join()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;结果: <span class="subst">&#123;t.result&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-守护线程（Daemon-Thread）"><a href="#3-3-守护线程（Daemon-Thread）" class="headerlink" title="3.3 守护线程（Daemon Thread）"></a>3.3 守护线程（Daemon Thread）</h3><p>守护线程会在主线程退出时自动终止，适合后台任务（如心跳检测、日志刷新）：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">heartbeat</span>():</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;💓 心跳检测...&quot;</span>)</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">t = threading.Thread(target=heartbeat, daemon=<span class="literal">True</span>)</span><br><span class="line">t.start()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;主程序运行中...&quot;</span>)</span><br><span class="line">time.sleep(<span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;主程序退出，守护线程自动终止&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、线程同步"><a href="#四、线程同步" class="headerlink" title="四、线程同步"></a>四、线程同步</h2><p>多个线程共享数据时，可能出现<strong>竞态条件（Race Condition）</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">counter = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">increment</span>():</span><br><span class="line">    <span class="keyword">global</span> counter</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100000</span>):</span><br><span class="line">        counter += <span class="number">1</span>  <span class="comment"># 非原子操作，存在竞态</span></span><br><span class="line"></span><br><span class="line">threads = [threading.Thread(target=increment) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>)]</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">    t.start()</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">    t.join()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;期望: 500000，实际: <span class="subst">&#123;counter&#125;</span>&quot;</span>)  <span class="comment"># 实际结果每次不同！</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-1-Lock（互斥锁）"><a href="#4-1-Lock（互斥锁）" class="headerlink" title="4.1 Lock（互斥锁）"></a>4.1 Lock（互斥锁）</h3><p>最基础的同步原语，同一时刻只有一个线程可以持有锁：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">counter = <span class="number">0</span></span><br><span class="line">lock = threading.Lock()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">safe_increment</span>():</span><br><span class="line">    <span class="keyword">global</span> counter</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100000</span>):</span><br><span class="line">        <span class="keyword">with</span> lock:          <span class="comment"># 自动 acquire / release</span></span><br><span class="line">            counter += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">threads = [threading.Thread(target=safe_increment) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>)]</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">    t.start()</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">    t.join()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;结果: <span class="subst">&#123;counter&#125;</span>&quot;</span>)  <span class="comment"># 稳定输出 500000</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-RLock（可重入锁）"><a href="#4-2-RLock（可重入锁）" class="headerlink" title="4.2 RLock（可重入锁）"></a>4.2 RLock（可重入锁）</h3><p>同一线程可以多次 acquire，避免自己把自己锁死：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">rlock = threading.RLock()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">outer</span>():</span><br><span class="line">    <span class="keyword">with</span> rlock:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;外层获取锁&quot;</span>)</span><br><span class="line">        inner()  <span class="comment"># 同一线程再次获取不会死锁</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">inner</span>():</span><br><span class="line">    <span class="keyword">with</span> rlock:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;内层获取锁&quot;</span>)</span><br><span class="line"></span><br><span class="line">t = threading.Thread(target=outer)</span><br><span class="line">t.start()</span><br><span class="line">t.join()</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-Event（事件通知）"><a href="#4-3-Event（事件通知）" class="headerlink" title="4.3 Event（事件通知）"></a>4.3 Event（事件通知）</h3><p>一个线程通知另一个线程某件事已发生：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">ready_event = threading.Event()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">producer</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;生产者：准备数据中...&quot;</span>)</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;生产者：数据已就绪，发出通知&quot;</span>)</span><br><span class="line">    ready_event.<span class="built_in">set</span>()  <span class="comment"># 触发事件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">consumer</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;消费者：等待数据...&quot;</span>)</span><br><span class="line">    ready_event.wait()  <span class="comment"># 阻塞直到事件触发</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;消费者：收到通知，开始消费数据&quot;</span>)</span><br><span class="line"></span><br><span class="line">t1 = threading.Thread(target=producer)</span><br><span class="line">t2 = threading.Thread(target=consumer)</span><br><span class="line"></span><br><span class="line">t2.start()</span><br><span class="line">t1.start()</span><br><span class="line"></span><br><span class="line">t1.join()</span><br><span class="line">t2.join()</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-Semaphore（信号量）"><a href="#4-4-Semaphore（信号量）" class="headerlink" title="4.4 Semaphore（信号量）"></a>4.4 Semaphore（信号量）</h3><p>控制同时访问某资源的线程数量，常用于限制并发连接数：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最多同时 3 个线程访问</span></span><br><span class="line">sem = threading.Semaphore(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">access_resource</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">with</span> sem:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;name&#125;</span> 获得访问权限&quot;</span>)</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;name&#125;</span> 释放访问权限&quot;</span>)</span><br><span class="line"></span><br><span class="line">threads = [threading.Thread(target=access_resource, args=(<span class="string">f&quot;线程<span class="subst">&#123;i&#125;</span>&quot;</span>,))</span><br><span class="line">           <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">    t.start()</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">    t.join()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、线程间通信：Queue"><a href="#五、线程间通信：Queue" class="headerlink" title="五、线程间通信：Queue"></a>五、线程间通信：Queue</h2><p><code>queue.Queue</code> 是线程安全的队列，是多线程间传递数据的推荐方式，内部已封装了锁：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> queue</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">task_queue = queue.Queue()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">producer</span>(<span class="params">q</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">        item = <span class="string">f&quot;任务-<span class="subst">&#123;i&#125;</span>&quot;</span></span><br><span class="line">        q.put(item)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;生产: <span class="subst">&#123;item&#125;</span>&quot;</span>)</span><br><span class="line">        time.sleep(random.uniform(<span class="number">0.1</span>, <span class="number">0.3</span>))</span><br><span class="line">    q.put(<span class="literal">None</span>)  <span class="comment"># 发送结束信号</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">consumer</span>(<span class="params">q</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        item = q.get()</span><br><span class="line">        <span class="keyword">if</span> item <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;消费: <span class="subst">&#123;item&#125;</span>&quot;</span>)</span><br><span class="line">        time.sleep(random.uniform(<span class="number">0.2</span>, <span class="number">0.5</span>))</span><br><span class="line">        q.task_done()</span><br><span class="line"></span><br><span class="line">p = threading.Thread(target=producer, args=(task_queue,))</span><br><span class="line">c = threading.Thread(target=consumer, args=(task_queue,))</span><br><span class="line"></span><br><span class="line">p.start()</span><br><span class="line">c.start()</span><br><span class="line"></span><br><span class="line">p.join()</span><br><span class="line">c.join()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;生产消费完成&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、线程池：ThreadPoolExecutor"><a href="#六、线程池：ThreadPoolExecutor" class="headerlink" title="六、线程池：ThreadPoolExecutor"></a>六、线程池：ThreadPoolExecutor</h2><p>手动管理线程生命周期很繁琐，<code>concurrent.futures.ThreadPoolExecutor</code> 提供了更高层<br>的接口：</p>
+<h3 id="6-1-基本用法"><a href="#6-1-基本用法" class="headerlink" title="6.1 基本用法"></a>6.1 基本用法</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fetch_data</span>(<span class="params">url</span>):</span><br><span class="line">    time.sleep(<span class="number">1</span>)  <span class="comment"># 模拟网络请求</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">f&quot;<span class="subst">&#123;url&#125;</span> 的数据&quot;</span></span><br><span class="line"></span><br><span class="line">urls = [</span><br><span class="line">    <span class="string">&quot;https://api.example.com/user/1&quot;</span>,</span><br><span class="line">    <span class="string">&quot;https://api.example.com/user/2&quot;</span>,</span><br><span class="line">    <span class="string">&quot;https://api.example.com/user/3&quot;</span>,</span><br><span class="line">    <span class="string">&quot;https://api.example.com/user/4&quot;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> ThreadPoolExecutor(max_workers=<span class="number">4</span>) <span class="keyword">as</span> executor:</span><br><span class="line">    results = <span class="built_in">list</span>(executor.<span class="built_in">map</span>(fetch_data, urls))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> r <span class="keyword">in</span> results:</span><br><span class="line">    <span class="built_in">print</span>(r)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-使用-Future-获取结果"><a href="#6-2-使用-Future-获取结果" class="headerlink" title="6.2 使用 Future 获取结果"></a>6.2 使用 Future 获取结果</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor, as_completed</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process</span>(<span class="params">task_id</span>):</span><br><span class="line">    delay = random.uniform(<span class="number">0.5</span>, <span class="number">2</span>)</span><br><span class="line">    time.sleep(delay)</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;id&quot;</span>: task_id, <span class="string">&quot;delay&quot;</span>: <span class="built_in">round</span>(delay, <span class="number">2</span>)&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> ThreadPoolExecutor(max_workers=<span class="number">3</span>) <span class="keyword">as</span> executor:</span><br><span class="line">    futures = &#123;executor.submit(process, i): i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>)&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># as_completed 按完成顺序返回，而非提交顺序</span></span><br><span class="line">    <span class="keyword">for</span> future <span class="keyword">in</span> as_completed(futures):</span><br><span class="line">        result = future.result()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;任务 <span class="subst">&#123;result[<span class="string">&#x27;id&#x27;</span>]&#125;</span> 完成，耗时 <span class="subst">&#123;result[<span class="string">&#x27;delay&#x27;</span>]&#125;</span>s&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-3-异常处理"><a href="#6-3-异常处理" class="headerlink" title="6.3 异常处理"></a>6.3 异常处理</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">risky_task</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">f&quot;任务 <span class="subst">&#123;n&#125;</span> 出错了&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> n * <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> ThreadPoolExecutor(max_workers=<span class="number">4</span>) <span class="keyword">as</span> executor:</span><br><span class="line">    futures = [executor.submit(risky_task, i) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, future <span class="keyword">in</span> <span class="built_in">enumerate</span>(futures):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        result = future.result()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;任务 <span class="subst">&#123;i&#125;</span> 结果: <span class="subst">&#123;result&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> ValueError <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;捕获异常: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、实战示例：并发批量-HTTP-请求"><a href="#七、实战示例：并发批量-HTTP-请求" class="headerlink" title="七、实战示例：并发批量 HTTP 请求"></a>七、实战示例：并发批量 HTTP 请求</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor, as_completed</span><br><span class="line"><span class="keyword">from</span> urllib.request <span class="keyword">import</span> urlopen</span><br><span class="line"><span class="keyword">from</span> urllib.error <span class="keyword">import</span> URLError</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fetch</span>(<span class="params">url, timeout=<span class="number">5</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;发起 HTTP 请求并返回状态&quot;&quot;&quot;</span></span><br><span class="line">    start = time.time()</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">with</span> urlopen(url, timeout=timeout) <span class="keyword">as</span> resp:</span><br><span class="line">            size = <span class="built_in">len</span>(resp.read())</span><br><span class="line">            elapsed = <span class="built_in">round</span>(time.time() - start, <span class="number">2</span>)</span><br><span class="line">            <span class="keyword">return</span> &#123;<span class="string">&quot;url&quot;</span>: url, <span class="string">&quot;status&quot;</span>: resp.status, <span class="string">&quot;size&quot;</span>: size, <span class="string">&quot;time&quot;</span>: elapsed&#125;</span><br><span class="line">    <span class="keyword">except</span> URLError <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;url&quot;</span>: url, <span class="string">&quot;error&quot;</span>: <span class="built_in">str</span>(e)&#125;</span><br><span class="line"></span><br><span class="line">urls = [</span><br><span class="line">    <span class="string">&quot;https://httpbin.org/get&quot;</span>,</span><br><span class="line">    <span class="string">&quot;https://httpbin.org/ip&quot;</span>,</span><br><span class="line">    <span class="string">&quot;https://httpbin.org/user-agent&quot;</span>,</span><br><span class="line">    <span class="string">&quot;https://httpbin.org/headers&quot;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;串行请求预计耗时: ~<span class="subst">&#123;<span class="built_in">len</span>(urls)&#125;</span>s&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;并发请求最多耗时: ~1s\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">start = time.time()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> ThreadPoolExecutor(max_workers=<span class="built_in">len</span>(urls)) <span class="keyword">as</span> executor:</span><br><span class="line">    futures = &#123;executor.submit(fetch, url): url <span class="keyword">for</span> url <span class="keyword">in</span> urls&#125;</span><br><span class="line">    <span class="keyword">for</span> future <span class="keyword">in</span> as_completed(futures):</span><br><span class="line">        result = future.result()</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;error&quot;</span> <span class="keyword">in</span> result:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;✗ <span class="subst">&#123;result[<span class="string">&#x27;url&#x27;</span>]&#125;</span>: <span class="subst">&#123;result[<span class="string">&#x27;error&#x27;</span>]&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;✓ <span class="subst">&#123;result[<span class="string">&#x27;url&#x27;</span>]&#125;</span> → <span class="subst">&#123;result[<span class="string">&#x27;status&#x27;</span>]&#125;</span> &quot;</span></span><br><span class="line">                  <span class="string">f&quot;(<span class="subst">&#123;result[<span class="string">&#x27;size&#x27;</span>]&#125;</span> bytes, <span class="subst">&#123;result[<span class="string">&#x27;time&#x27;</span>]&#125;</span>s)&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;\n总耗时: <span class="subst">&#123;<span class="built_in">round</span>(time.time() - start, <span class="number">2</span>)&#125;</span>s&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="八、常见陷阱"><a href="#八、常见陷阱" class="headerlink" title="八、常见陷阱"></a>八、常见陷阱</h2><h3 id="陷阱-1：闭包变量捕获"><a href="#陷阱-1：闭包变量捕获" class="headerlink" title="陷阱 1：闭包变量捕获"></a>陷阱 1：闭包变量捕获</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="comment"># ❌ 错误：所有线程捕获的是同一个变量 i</span></span><br><span class="line">threads = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    t = threading.Thread(target=<span class="keyword">lambda</span>: <span class="built_in">print</span>(i))</span><br><span class="line">    threads.append(t)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">    t.start()</span><br><span class="line"><span class="comment"># 可能全部输出 4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 正确：通过默认参数绑定当前值</span></span><br><span class="line">threads = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    t = threading.Thread(target=<span class="keyword">lambda</span> x=i: <span class="built_in">print</span>(x))</span><br><span class="line">    threads.append(t)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">    t.start()</span><br></pre></td></tr></table></figure>
+
+<h3 id="陷阱-2：忘记-join-导致主线程提前退出"><a href="#陷阱-2：忘记-join-导致主线程提前退出" class="headerlink" title="陷阱 2：忘记 join 导致主线程提前退出"></a>陷阱 2：忘记 join 导致主线程提前退出</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">results = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">worker</span>():</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    results.append(<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line">t = threading.Thread(target=worker)</span><br><span class="line">t.start()</span><br><span class="line"><span class="comment"># ❌ 忘记 t.join()，results 可能仍为空</span></span><br><span class="line"><span class="built_in">print</span>(results)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 正确</span></span><br><span class="line">t.join()</span><br><span class="line"><span class="built_in">print</span>(results)  <span class="comment"># [42]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="陷阱-3：死锁"><a href="#陷阱-3：死锁" class="headerlink" title="陷阱 3：死锁"></a>陷阱 3：死锁</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">lock_a = threading.Lock()</span><br><span class="line">lock_b = threading.Lock()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ❌ 线程 1 持有 A 等待 B，线程 2 持有 B 等待 A → 死锁</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">thread1</span>():</span><br><span class="line">    <span class="keyword">with</span> lock_a:</span><br><span class="line">        time.sleep(<span class="number">0.1</span>)</span><br><span class="line">        <span class="keyword">with</span> lock_b:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;线程1完成&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">thread2</span>():</span><br><span class="line">    <span class="keyword">with</span> lock_b:</span><br><span class="line">        time.sleep(<span class="number">0.1</span>)</span><br><span class="line">        <span class="keyword">with</span> lock_a:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;线程2完成&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 解决：保持所有线程以相同顺序获取锁</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">thread1_safe</span>():</span><br><span class="line">    <span class="keyword">with</span> lock_a:</span><br><span class="line">        <span class="keyword">with</span> lock_b:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;线程1完成&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">thread2_safe</span>():</span><br><span class="line">    <span class="keyword">with</span> lock_a:  <span class="comment"># 与 thread1 相同顺序</span></span><br><span class="line">        <span class="keyword">with</span> lock_b:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;线程2完成&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="九、选型建议"><a href="#九、选型建议" class="headerlink" title="九、选型建议"></a>九、选型建议</h2><table>
+<thead>
+<tr>
+<th>需求</th>
+<th>推荐方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>并发网络请求、文件 I/O</td>
+<td><code>ThreadPoolExecutor</code></td>
+</tr>
+<tr>
+<td>CPU 密集型计算</td>
+<td><code>multiprocessing.Pool</code></td>
+</tr>
+<tr>
+<td>高并发 I/O（万级连接）</td>
+<td><code>asyncio</code></td>
+</tr>
+<tr>
+<td>简单后台任务</td>
+<td><code>threading.Thread(daemon=True)</code></td>
+</tr>
+<tr>
+<td>生产者消费者模型</td>
+<td><code>threading</code> + <code>queue.Queue</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>Python 多线程受 GIL 限制，<strong>适合 I/O 密集型，不适合 CPU 密集型</strong></li>
+<li>共享数据必须用 <code>Lock</code> 保护，推荐用 <code>with lock:</code> 语法避免忘记释放</li>
+<li>线程间通信优先用 <code>queue.Queue</code>，它是线程安全的</li>
+<li>实际项目中优先使用 <code>ThreadPoolExecutor</code>，比手动管理线程更简洁安全</li>
+<li>注意闭包变量捕获和死锁两大经典陷阱</li>
+</ul>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://sai.thissai.com/2026/02/09/536/" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2026/04/09/535/">bash 污染与清理：原理、实战与防御</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/01/29/533/">服务器直传文件到slack</a></div></section></div>
+
+
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">Sai Wang</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Python3-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97"><span class="toc-text">Python3 多线程编程指南</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%EF%BC%9F"><span class="toc-text">一、什么是线程？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81GIL%EF%BC%9APython-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%A0%B8%E5%BF%83%E9%99%90%E5%88%B6"><span class="toc-text">二、GIL：Python 多线程的核心限制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95"><span class="toc-text">三、基础用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="toc-text">3.1 创建线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%BB%A7%E6%89%BF-Thread-%E7%B1%BB"><span class="toc-text">3.2 继承 Thread 类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B%EF%BC%88Daemon-Thread%EF%BC%89"><span class="toc-text">3.3 守护线程（Daemon Thread）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-text">四、线程同步</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Lock%EF%BC%88%E4%BA%92%E6%96%A5%E9%94%81%EF%BC%89"><span class="toc-text">4.1 Lock（互斥锁）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-RLock%EF%BC%88%E5%8F%AF%E9%87%8D%E5%85%A5%E9%94%81%EF%BC%89"><span class="toc-text">4.2 RLock（可重入锁）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Event%EF%BC%88%E4%BA%8B%E4%BB%B6%E9%80%9A%E7%9F%A5%EF%BC%89"><span class="toc-text">4.3 Event（事件通知）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-Semaphore%EF%BC%88%E4%BF%A1%E5%8F%B7%E9%87%8F%EF%BC%89"><span class="toc-text">4.4 Semaphore（信号量）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%BA%BF%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%EF%BC%9AQueue"><span class="toc-text">五、线程间通信：Queue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%9AThreadPoolExecutor"><span class="toc-text">六、线程池：ThreadPoolExecutor</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="toc-text">6.1 基本用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E4%BD%BF%E7%94%A8-Future-%E8%8E%B7%E5%8F%96%E7%BB%93%E6%9E%9C"><span class="toc-text">6.2 使用 Future 获取结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">6.3 异常处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%AE%9E%E6%88%98%E7%A4%BA%E4%BE%8B%EF%BC%9A%E5%B9%B6%E5%8F%91%E6%89%B9%E9%87%8F-HTTP-%E8%AF%B7%E6%B1%82"><span class="toc-text">七、实战示例：并发批量 HTTP 请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%B8%B8%E8%A7%81%E9%99%B7%E9%98%B1"><span class="toc-text">八、常见陷阱</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%B7%E9%98%B1-1%EF%BC%9A%E9%97%AD%E5%8C%85%E5%8F%98%E9%87%8F%E6%8D%95%E8%8E%B7"><span class="toc-text">陷阱 1：闭包变量捕获</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%B7%E9%98%B1-2%EF%BC%9A%E5%BF%98%E8%AE%B0-join-%E5%AF%BC%E8%87%B4%E4%B8%BB%E7%BA%BF%E7%A8%8B%E6%8F%90%E5%89%8D%E9%80%80%E5%87%BA"><span class="toc-text">陷阱 2：忘记 join 导致主线程提前退出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%99%B7%E9%98%B1-3%EF%BC%9A%E6%AD%BB%E9%94%81"><span class="toc-text">陷阱 3：死锁</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E9%80%89%E5%9E%8B%E5%BB%BA%E8%AE%AE"><span class="toc-text">九、选型建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
