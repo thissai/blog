@@ -1,0 +1,713 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin><link rel="preconnect" href="https://unpkg.com" crossorigin><link rel="preconnect" href="https://cdn.bootcdn.net" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>macOS App Developer ID 签名与公证完整指南 - Sai's blog</title>
+
+  
+    <meta name="description" content="记录为 macOS App 配置 Developer ID 签名和 Apple 公证的完整过程，包含所有踩坑记录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="macOS App Developer ID 签名与公证完整指南">
+<meta property="og:url" content="https://sai.thissai.com/2026/04/22/556/index.html">
+<meta property="og:site_name" content="Sai&#39;s blog">
+<meta property="og:description" content="记录为 macOS App 配置 Developer ID 签名和 Apple 公证的完整过程，包含所有踩坑记录。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-04-22T09:11:13.000Z">
+<meta property="article:modified_time" content="2026-04-22T11:55:53.681Z">
+<meta property="article:author" content="Sai Wang">
+<meta property="article:tag" content="macOS">
+<meta property="article:tag" content="Tauri">
+<meta property="article:tag" content="Code Signing">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="macOS, Developer ID, Code Signing, Notarization, Tauri, Gatekeeper">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+
+  
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/xaoxuu/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/xaoxuu/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/xaoxuu/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/xaoxuu/favicon/site.webmanifest"><link rel="shortcut icon" href="/assets/xaoxuu/favicon/favicon.ico"><meta name="theme-color" content="#f8f8f8"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.min.css" media="all" />
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><div class="icon"><img no-lazy class="icon" src="/assets/icon.svg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></div><a class="title" href="/"><div class="main" ff="title">sai blog</div><div class="sub cap">分享技术知识</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="php-frame" href="/categories/phpframe/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="go example" href="/categories/goexample/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="about" href="/about/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/04/22/556/"><span class="title">macOS App Developer ID 签名与公证完整指南</span></a><a class="item title" href="/2026/02/09/536/"><span class="title">python3 多线程编程指南</span></a><a class="item title" href="/2026/04/09/535/"><span class="title">bash 污染与清理：原理、实战与防御</span></a><a class="item title" href="/2019/11/22/Nginx6/"><span class="title">Nginx配置常用参数</span></a><a class="item title" href="/2019/11/20/Nginx9/"><span class="title">Nginx添加lua-nginx模块</span></a><a class="item title" href="/2018/10/19/Nginx4/"><span class="title">nginx健康检查</span></a><a class="item title" href="/2020/02/08/phpframe06/"><span class="title">框架篇：3.路由解析</span></a><a class="item title" href="/2025/07/07/224/"><span class="title">Laravel限流Redis throttle</span></a><a class="item title" href="/2021/03/08/base/"><span class="title">Redis基础类型、常用知识</span></a><a class="item title" href="/2026/01/29/533/"><span class="title">服务器直传文件到slack</span></a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/macOS/">macOS</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-04-22T09:11:13.000Z">2026-04-22</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-04-22T11:55:53.681Z">2026-04-22</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>macOS App Developer ID 签名与公证完整指南</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>注册了 Apple Developer 账号之后，打出来的包用户下载会被 Gatekeeper 拦截，提示「<br>无法验证开发者」。要让所有用户都能正常打开，需要完成两件事：<strong>Developer ID<br>Application 证书签名</strong> + <strong>Apple 公证（Notarization）</strong>。</p>
+<p>本文记录了从零开始配置的完整过程，以及中间遇到的各种报错。</p>
+<hr>
+<h2 id="概念梳理"><a href="#概念梳理" class="headerlink" title="概念梳理"></a>概念梳理</h2><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Developer ID Application</strong></td>
+<td>用于在 Mac App Store 以外分发 App 的证书</td>
+</tr>
+<tr>
+<td><strong>Ad-hoc 签名</strong></td>
+<td>用 <code>-</code> 号签名，仅本机可用，无法通过 Gatekeeper</td>
+</tr>
+<tr>
+<td><strong>公证（Notarization）</strong></td>
+<td>将 App 提交 Apple 服务器扫描，通过后颁发票据</td>
+</tr>
+<tr>
+<td><strong>Staple</strong></td>
+<td>将公证票据嵌入 DMG/App，用户离线也能验证</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="第一步：生成-CSR-并创建证书"><a href="#第一步：生成-CSR-并创建证书" class="headerlink" title="第一步：生成 CSR 并创建证书"></a>第一步：生成 CSR 并创建证书</h2><h3 id="关键顺序：先在本机生成-CSR，再去-Apple-后台创建证书"><a href="#关键顺序：先在本机生成-CSR，再去-Apple-后台创建证书" class="headerlink" title="关键顺序：先在本机生成 CSR，再去 Apple 后台创建证书"></a>关键顺序：先在本机生成 CSR，再去 Apple 后台创建证书</h3><blockquote>
+<p>常见错误是先在 Apple Developer 后台点创建，再下载 <code>.cer</code> 安装。这样本机没有对<br>应私钥，证书装不进去。</p>
+</blockquote>
+<p>打开<strong>钥匙串访问</strong> → 菜单栏 → <strong>证书助理 → 从证书颁发机构请求证书</strong>：</p>
+<ul>
+<li>用户电子邮件地址：Apple ID 邮箱</li>
+<li>常用名称：随意，如 <code>MyApp Developer</code></li>
+<li>选择：<strong>存储到磁盘</strong></li>
+</ul>
+<p>保存生成的 <code>CertificateSigningRequest.certSigningRequest</code> 文件。</p>
+<h3 id="在-Apple-Developer-后台创建证书"><a href="#在-Apple-Developer-后台创建证书" class="headerlink" title="在 Apple Developer 后台创建证书"></a>在 Apple Developer 后台创建证书</h3><ol>
+<li>登录<br><a target="_blank" rel="noopener" href="https://developer.apple.com/account/resources/certificates/list">developer.apple.com</a></li>
+<li>点击 <strong>Certificates → +</strong></li>
+<li>选择 <strong>Developer ID Application</strong></li>
+<li>Profile Type 选 <strong>G2 Sub-CA (Xcode 11.4.1 or later)</strong></li>
+<li>上传上一步生成的 CSR 文件</li>
+<li>下载 <code>.cer</code> 文件</li>
+</ol>
+<h3 id="安装证书"><a href="#安装证书" class="headerlink" title="安装证书"></a>安装证书</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">open ~/Downloads/developerID_application.cer</span><br></pre></td></tr></table></figure>
+
+<p>钥匙串访问弹窗点<strong>添加</strong>。</p>
+<h3 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">security find-identity -v -p codesigning | grep <span class="string">&quot;Developer ID&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>正常输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) ABCDEF1234... &quot;Developer ID Application: Your Name (TEAMID)&quot;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="第二步：创建-App-Specific-Password"><a href="#第二步：创建-App-Specific-Password" class="headerlink" title="第二步：创建 App-Specific Password"></a>第二步：创建 App-Specific Password</h2><p>公证时不能直接用 Apple ID 密码，需要单独生成一个。</p>
+<ol>
+<li>登录 <a target="_blank" rel="noopener" href="https://appleid.apple.com/">appleid.apple.com</a></li>
+<li><strong>Sign-In and Security → App-Specific Passwords → Generate</strong></li>
+<li>名字随意，如 <code>myapp-notarize</code>，保存生成的密码（格式 <code>xxxx-xxxx-xxxx-xxxx</code>）</li>
+</ol>
+<hr>
+<h2 id="第三步：配置本地环境变量"><a href="#第三步：配置本地环境变量" class="headerlink" title="第三步：配置本地环境变量"></a>第三步：配置本地环境变量</h2><p>在项目根目录创建 <code>.env.local</code>，加入 <code>.gitignore</code> 不提交：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">APPLE_SIGNING_IDENTITY=Developer ID Application: Your Name (TEAMID)</span><br><span class="line">APPLE_ID=your@email.com</span><br><span class="line">APPLE_PASSWORD=xxxx-xxxx-xxxx-xxxx</span><br><span class="line">APPLE_TEAM_ID=XXXXXXXXXX</span><br></pre></td></tr></table></figure>
+
+<p>Team ID 就是 <code>security find-identity</code> 输出中括号里的字符串。</p>
+<h3 id="安全加载方式（避免-xargs-空格问题，见踩坑三）"><a href="#安全加载方式（避免-xargs-空格问题，见踩坑三）" class="headerlink" title="安全加载方式（避免 xargs 空格问题，见踩坑三）"></a>安全加载方式（避免 xargs 空格问题，见踩坑三）</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> [ -f <span class="string">&quot;.env.local&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="keyword">while</span> IFS=<span class="string">&#x27;=&#x27;</span> <span class="built_in">read</span> -r key value; <span class="keyword">do</span></span><br><span class="line">    [[ <span class="string">&quot;<span class="variable">$key</span>&quot;</span> =~ ^#.*$ || -z <span class="string">&quot;<span class="variable">$key</span>&quot;</span> ]] &amp;&amp; <span class="built_in">continue</span></span><br><span class="line">    key=<span class="string">&quot;<span class="variable">$&#123;key// /&#125;</span>&quot;</span></span><br><span class="line">    value=<span class="string">&quot;<span class="variable">$&#123;value#&quot;<span class="variable">$&#123;value%%[![:space:]]*&#125;</span>&quot;&#125;</span>&quot;</span></span><br><span class="line">    value=<span class="string">&quot;<span class="variable">$&#123;value%&quot;<span class="variable">$&#123;value##*[![:space:]]&#125;</span>&quot;&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">export</span> <span class="string">&quot;<span class="variable">$key</span>=<span class="variable">$value</span>&quot;</span></span><br><span class="line">  <span class="keyword">done</span> &lt; .env.local</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="第四步：Tauri-项目配置"><a href="#第四步：Tauri-项目配置" class="headerlink" title="第四步：Tauri 项目配置"></a>第四步：Tauri 项目配置</h2><p><code>tauri.conf.json</code> 中将 <code>signingIdentity</code> 设为 <code>null</code>，Tauri 会自动读取环境变量<br><code>APPLE_SIGNING_IDENTITY</code>：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;bundle&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;macOS&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;signingIdentity&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">null</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="第五步：构建、公证、Staple"><a href="#第五步：构建、公证、Staple" class="headerlink" title="第五步：构建、公证、Staple"></a>第五步：构建、公证、Staple</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 构建（Tauri 自动签名）</span></span><br><span class="line">npm run tauri build -- --target universal-apple-darwin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 公证（约 1-3 分钟）</span></span><br><span class="line">xcrun notarytool submit MyApp.dmg \</span><br><span class="line">  --apple-id <span class="string">&quot;<span class="variable">$APPLE_ID</span>&quot;</span> \</span><br><span class="line">  --password <span class="string">&quot;<span class="variable">$APPLE_PASSWORD</span>&quot;</span> \</span><br><span class="line">  --team-id <span class="string">&quot;<span class="variable">$APPLE_TEAM_ID</span>&quot;</span> \</span><br><span class="line">  --<span class="built_in">wait</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 钉附票据到 DMG</span></span><br><span class="line">xcrun stapler staple MyApp.dmg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证</span></span><br><span class="line">xcrun stapler validate MyApp.dmg</span><br></pre></td></tr></table></figure>
+
+<h3 id="验证公证结果"><a href="#验证公证结果" class="headerlink" title="验证公证结果"></a>验证公证结果</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">spctl --assess --<span class="built_in">type</span> open --context context:primary-signature -v MyApp.dmg</span><br><span class="line"><span class="comment"># MyApp.dmg: accepted</span></span><br><span class="line"><span class="comment"># source=Notarized Developer ID</span></span><br></pre></td></tr></table></figure>
+
+<p>输出 <code>source=Notarized Developer ID</code> 表示公证成功，用户下载后 Gatekeeper 自动放<br>行。</p>
+<hr>
+<h2 id="踩坑记录"><a href="#踩坑记录" class="headerlink" title="踩坑记录"></a>踩坑记录</h2><h3 id="踩坑一：Error-25294，证书无法导入"><a href="#踩坑一：Error-25294，证书无法导入" class="headerlink" title="踩坑一：Error -25294，证书无法导入"></a>踩坑一：Error -25294，证书无法导入</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">An error occurred. Unable to import &quot;Developer ID Application: ...&quot;</span><br><span class="line">Error: -25294</span><br></pre></td></tr></table></figure>
+
+<p><strong>原因</strong>：先在 Apple Developer 后台创建并下载了证书，本机没有对应的私钥。</p>
+<p><strong>解决</strong>：在 Apple Developer 后台 Revoke 旧证书，重新按「先生成 CSR → 再创建证书<br>」的顺序操作。</p>
+<hr>
+<h3 id="踩坑二：unable-to-build-chain-errSecInternalComponent"><a href="#踩坑二：unable-to-build-chain-errSecInternalComponent" class="headerlink" title="踩坑二：unable to build chain / errSecInternalComponent"></a>踩坑二：unable to build chain / errSecInternalComponent</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Warning: unable to build chain to self-signed root for signer &quot;...&quot;</span><br><span class="line">errSecInternalComponent</span><br><span class="line">failed to sign app</span><br></pre></td></tr></table></figure>
+
+<p><strong>原因</strong>：Apple 的中间证书（WWDR G2 Intermediate CA）没有安装，证书链不完整。</p>
+<p><strong>解决</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -O https://www.apple.com/certificateauthority/DeveloperIDG2CA.cer</span><br><span class="line"><span class="built_in">sudo</span> security add-certificates -k /Library/Keychains/System.keychain DeveloperIDG2CA.cer</span><br></pre></td></tr></table></figure>
+
+<p>也可以在钥匙串访问中手动导入：<strong>文件 → 导入项目</strong> → 选择 <code>.cer</code> 文件 → 选目标钥<br>匙串为<strong>系统</strong>。</p>
+<hr>
+<h3 id="踩坑三：CSSMERR-TP-NOT-TRUSTED，valid-identities-为-0"><a href="#踩坑三：CSSMERR-TP-NOT-TRUSTED，valid-identities-为-0" class="headerlink" title="踩坑三：CSSMERR_TP_NOT_TRUSTED，valid identities 为 0"></a>踩坑三：CSSMERR_TP_NOT_TRUSTED，valid identities 为 0</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1) XXXX &quot;Developer ID Application: ...&quot; (CSSMERR_TP_NOT_TRUSTED)</span><br><span class="line">0 valid identities found</span><br></pre></td></tr></table></figure>
+
+<p><strong>原因</strong>：同踩坑二，中间证书缺失导致信任链断开。<code>security find-identity -v</code> 只显<br>示 valid 证书，因此结果为 0，签名命令找不到可用身份。</p>
+<p><strong>解决</strong>：安装 WWDR G2 中间证书（同踩坑二）。</p>
+<hr>
+<h3 id="踩坑四：-env-local-含空格的值被截断"><a href="#踩坑四：-env-local-含空格的值被截断" class="headerlink" title="踩坑四：.env.local 含空格的值被截断"></a>踩坑四：.env.local 含空格的值被截断</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./deploy.sh: line 11: export: `Application:&#x27;: not a valid identifier</span><br><span class="line">./deploy.sh: line 11: export: `(TEAMID)&#x27;: not a valid identifier</span><br></pre></td></tr></table></figure>
+
+<p><strong>原因</strong>：<code>export $(grep -v &#39;^#&#39; .env.local | xargs)</code> 中 <code>xargs</code> 会按空格分割<br>，<code>Developer ID Application: ...</code> 被拆成多个 token。</p>
+<p><strong>解决</strong>：改用第三步中的 <code>while IFS=&#39;=&#39; read</code> 方式加载，可正确处理值中的空格。</p>
+<hr>
+<h3 id="踩坑五：签名身份末尾有隐藏空格"><a href="#踩坑五：签名身份末尾有隐藏空格" class="headerlink" title="踩坑五：签名身份末尾有隐藏空格"></a>踩坑五：签名身份末尾有隐藏空格</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&quot;Developer ID Application: Your Name (TEAMID)                        &quot;: no identity found</span><br></pre></td></tr></table></figure>
+
+<p><strong>原因</strong>：从终端复制 <code>security find-identity</code> 输出时，行末带了大量空格，粘贴进<br><code>.env.local</code> 后一起保存了。</p>
+<p><strong>解决</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 清除文件所有行末空格</span></span><br><span class="line">sed -i <span class="string">&#x27;&#x27;</span> <span class="string">&#x27;s/[[:space:]]*$//&#x27;</span> .env.local</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="踩坑六：Xcode-项目找不到-Mac-Development-证书"><a href="#踩坑六：Xcode-项目找不到-Mac-Development-证书" class="headerlink" title="踩坑六：Xcode 项目找不到 Mac Development 证书"></a>踩坑六：Xcode 项目找不到 Mac Development 证书</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">No signing certificate &quot;Mac Development&quot; found:</span><br><span class="line">No &quot;Mac Development&quot; signing certificate matching team ID &quot;...&quot; found.</span><br></pre></td></tr></table></figure>
+
+<p><strong>原因</strong>：<code>CODE_SIGN_STYLE=Automatic</code> 在 <code>xcodebuild archive</code> 时默认寻找开发证书<br>（Mac Development），但我们只有分发证书（Developer ID Application）。</p>
+<p><strong>解决</strong>：手动指定 Manual 签名模式和 Developer ID：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xcodebuild -project MyApp.xcodeproj \</span><br><span class="line">  -scheme MyApp \</span><br><span class="line">  -configuration Release \</span><br><span class="line">  -archivePath ./build/MyApp.xcarchive \</span><br><span class="line">  archive \</span><br><span class="line">  CODE_SIGN_STYLE=Manual \</span><br><span class="line">  CODE_SIGN_IDENTITY=<span class="string">&quot;Developer ID Application&quot;</span> \</span><br><span class="line">  DEVELOPMENT_TEAM=<span class="string">&quot;YOUR_TEAM_ID&quot;</span> \</span><br><span class="line">  OTHER_CODE_SIGN_FLAGS=<span class="string">&quot;--timestamp&quot;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="gitignore-补充"><a href="#gitignore-补充" class="headerlink" title=".gitignore 补充"></a>.gitignore 补充</h2><p>证书相关文件不应提交到仓库：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">*.cer</span><br><span class="line">*.p12</span><br><span class="line">*.p8</span><br><span class="line">*.mobileprovision</span><br><span class="line">*.provisionprofile</span><br><span class="line">.env.local</span><br></pre></td></tr></table></figure>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://sai.thissai.com/2026/04/22/556/" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/04/09/535/">bash 污染与清理：原理、实战与防御</a></div></section></div>
+
+
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">Sai Wang</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E6%A2%B3%E7%90%86"><span class="toc-text">概念梳理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E7%94%9F%E6%88%90-CSR-%E5%B9%B6%E5%88%9B%E5%BB%BA%E8%AF%81%E4%B9%A6"><span class="toc-text">第一步：生成 CSR 并创建证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E9%A1%BA%E5%BA%8F%EF%BC%9A%E5%85%88%E5%9C%A8%E6%9C%AC%E6%9C%BA%E7%94%9F%E6%88%90-CSR%EF%BC%8C%E5%86%8D%E5%8E%BB-Apple-%E5%90%8E%E5%8F%B0%E5%88%9B%E5%BB%BA%E8%AF%81%E4%B9%A6"><span class="toc-text">关键顺序：先在本机生成 CSR，再去 Apple 后台创建证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-Apple-Developer-%E5%90%8E%E5%8F%B0%E5%88%9B%E5%BB%BA%E8%AF%81%E4%B9%A6"><span class="toc-text">在 Apple Developer 后台创建证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%AF%81%E4%B9%A6"><span class="toc-text">安装证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85"><span class="toc-text">验证安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E5%88%9B%E5%BB%BA-App-Specific-Password"><span class="toc-text">第二步：创建 App-Specific Password</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-text">第三步：配置本地环境变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%8A%A0%E8%BD%BD%E6%96%B9%E5%BC%8F%EF%BC%88%E9%81%BF%E5%85%8D-xargs-%E7%A9%BA%E6%A0%BC%E9%97%AE%E9%A2%98%EF%BC%8C%E8%A7%81%E8%B8%A9%E5%9D%91%E4%B8%89%EF%BC%89"><span class="toc-text">安全加载方式（避免 xargs 空格问题，见踩坑三）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9ATauri-%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE"><span class="toc-text">第四步：Tauri 项目配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E6%AD%A5%EF%BC%9A%E6%9E%84%E5%BB%BA%E3%80%81%E5%85%AC%E8%AF%81%E3%80%81Staple"><span class="toc-text">第五步：构建、公证、Staple</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E5%85%AC%E8%AF%81%E7%BB%93%E6%9E%9C"><span class="toc-text">验证公证结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95"><span class="toc-text">踩坑记录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B8%A9%E5%9D%91%E4%B8%80%EF%BC%9AError-25294%EF%BC%8C%E8%AF%81%E4%B9%A6%E6%97%A0%E6%B3%95%E5%AF%BC%E5%85%A5"><span class="toc-text">踩坑一：Error -25294，证书无法导入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B8%A9%E5%9D%91%E4%BA%8C%EF%BC%9Aunable-to-build-chain-errSecInternalComponent"><span class="toc-text">踩坑二：unable to build chain &#x2F; errSecInternalComponent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B8%A9%E5%9D%91%E4%B8%89%EF%BC%9ACSSMERR-TP-NOT-TRUSTED%EF%BC%8Cvalid-identities-%E4%B8%BA-0"><span class="toc-text">踩坑三：CSSMERR_TP_NOT_TRUSTED，valid identities 为 0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B8%A9%E5%9D%91%E5%9B%9B%EF%BC%9A-env-local-%E5%90%AB%E7%A9%BA%E6%A0%BC%E7%9A%84%E5%80%BC%E8%A2%AB%E6%88%AA%E6%96%AD"><span class="toc-text">踩坑四：.env.local 含空格的值被截断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B8%A9%E5%9D%91%E4%BA%94%EF%BC%9A%E7%AD%BE%E5%90%8D%E8%BA%AB%E4%BB%BD%E6%9C%AB%E5%B0%BE%E6%9C%89%E9%9A%90%E8%97%8F%E7%A9%BA%E6%A0%BC"><span class="toc-text">踩坑五：签名身份末尾有隐藏空格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B8%A9%E5%9D%91%E5%85%AD%EF%BC%9AXcode-%E9%A1%B9%E7%9B%AE%E6%89%BE%E4%B8%8D%E5%88%B0-Mac-Development-%E8%AF%81%E4%B9%A6"><span class="toc-text">踩坑六：Xcode 项目找不到 Mac Development 证书</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-%E8%A1%A5%E5%85%85"><span class="toc-text">.gitignore 补充</span></a></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
