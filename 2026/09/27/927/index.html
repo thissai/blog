@@ -1,0 +1,1191 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin><link rel="preconnect" href="https://unpkg.com" crossorigin><link rel="preconnect" href="https://cdn.bootcdn.net" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>Laravel12日志配置说明 - Sai's blog</title>
+
+  
+    <meta name="description" content="Laravel 12 日志 config&#x2F;logging.php 各个配置项说明">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laravel12日志配置说明">
+<meta property="og:url" content="https://sai.thissai.com/2026/09/27/927/index.html">
+<meta property="og:site_name" content="Sai&#39;s blog">
+<meta property="og:description" content="Laravel 12 日志 config&#x2F;logging.php 各个配置项说明">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-09-27T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-27T01:21:45.152Z">
+<meta property="article:author" content="Sai Wang">
+<meta property="article:tag" content="Laravel">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="Laravel,Laravel12,Laravel日志,logging,Monolog">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+
+  
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/xaoxuu/favicon/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/xaoxuu/favicon/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/xaoxuu/favicon/favicon-16x16.png"><link rel="manifest" href="/assets/xaoxuu/favicon/site.webmanifest"><link rel="shortcut icon" href="/assets/xaoxuu/favicon/favicon.ico"><meta name="theme-color" content="#f8f8f8"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.min.css" media="all" />
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><div class="icon"><img no-lazy class="icon" src="/assets/icon.svg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></div><a class="title" href="/"><div class="main" ff="title">sai blog</div><div class="sub cap">分享技术知识</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="php-frame" href="/categories/phpframe/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="go example" href="/categories/goexample/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="about" href="/about/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/09/27/927/"><span class="title">Laravel12日志配置说明</span></a><a class="item title" href="/2026/04/09/535/"><span class="title">bash 污染与清理：原理、实战与防御</span></a><a class="item title" href="/2026/06/11/611/"><span class="title">rclone使用</span></a><a class="item title" href="/2026/04/22/556/"><span class="title">macOS App Developer ID 签名与公证完整指南</span></a><a class="item title" href="/2026/02/09/536/"><span class="title">python3 多线程编程指南</span></a><a class="item title" href="/2019/11/20/Nginx9/"><span class="title">Nginx添加lua-nginx模块</span></a><a class="item title" href="/2019/11/22/Nginx6/"><span class="title">Nginx配置常用参数</span></a><a class="item title" href="/2018/10/19/Nginx4/"><span class="title">nginx健康检查</span></a><a class="item title" href="/2020/02/08/phpframe06/"><span class="title">框架篇：3.路由解析</span></a><a class="item title" href="/2025/07/07/224/"><span class="title">Laravel限流Redis throttle</span></a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/PHP/">PHP</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-09-27T02:00:00.000Z">2026-09-27</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-09-27T01:21:45.152Z">2026-09-27</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>Laravel12日志配置说明</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h1 id="Laravel-12-日志配置详解：config-logging-php-逐项说明"><a href="#Laravel-12-日志配置详解：config-logging-php-逐项说明" class="headerlink" title="Laravel 12 日志配置详解：config/logging.php 逐项说明"></a>Laravel 12 日志配置详解：config/logging.php 逐项说明</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Laravel 的日志系统基于 <a target="_blank" rel="noopener" href="https://github.com/Seldaek/monolog">Monolog</a>，所有配置集<br>中在 <code>config/logging.php</code>。本文以 <strong>Laravel 12</strong> 为例，逐项说明默认配置中每个字<br>段的含义，以及常见的使用场景。</p>
+<p>参考<br>：<a target="_blank" rel="noopener" href="https://laravel.com/framework/docs/12.x/logging">Laravel 12.x Logging 官方文档</a></p>
+<hr>
+<h2 id="一、配置文件位置"><a href="#一、配置文件位置" class="headerlink" title="一、配置文件位置"></a>一、配置文件位置</h2><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>config/logging.php</code></td>
+<td>日志主配置文件</td>
+</tr>
+<tr>
+<td><code>.env</code></td>
+<td>通过环境变量覆盖配置</td>
+</tr>
+<tr>
+<td><code>storage/logs/</code></td>
+<td>默认日志输出目录</td>
+</tr>
+<tr>
+<td><code>bootstrap/app.php</code></td>
+<td>异常上报相关配置（<code>withExceptions</code>）</td>
+</tr>
+</tbody></table>
+<p>如果项目中没有 <code>config/logging.php</code>，可以手动发布：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">php artisan config:publish logging</span><br></pre></td></tr></table></figure>
+
+<p>新项目 <code>.env</code> 中默认的日志相关变量：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">LOG_CHANNEL</span>=stack</span><br><span class="line"><span class="attr">LOG_STACK</span>=single</span><br><span class="line"><span class="attr">LOG_DEPRECATIONS_CHANNEL</span>=null</span><br><span class="line"><span class="attr">LOG_LEVEL</span>=debug</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="二、配置文件整体结构"><a href="#二、配置文件整体结构" class="headerlink" title="二、配置文件整体结构"></a>二、配置文件整体结构</h2><p>Laravel 12 默认的 <code>config/logging.php</code> 由三部分组成：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> [</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_CHANNEL&#x27;</span>, <span class="string">&#x27;stack&#x27;</span>),   <span class="comment">// 默认通道</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&#x27;deprecations&#x27;</span> =&gt; [ ... ],                  <span class="comment">// 废弃警告日志</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&#x27;channels&#x27;</span> =&gt; [ ... ],                      <span class="comment">// 所有通道定义</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、顶层配置"><a href="#三、顶层配置" class="headerlink" title="三、顶层配置"></a>三、顶层配置</h2><h3 id="default：默认通道"><a href="#default：默认通道" class="headerlink" title="default：默认通道"></a>default：默认通道</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;default&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_CHANNEL&#x27;</span>, <span class="string">&#x27;stack&#x27;</span>),</span><br></pre></td></tr></table></figure>
+
+<p>调用 <code>Log::info()</code>、<code>logger()</code> 等方法时，未指定通道就写入这里配置的通道。值必须<br>是 <code>channels</code> 中定义过的某个 key。</p>
+<h3 id="deprecations：废弃警告"><a href="#deprecations：废弃警告" class="headerlink" title="deprecations：废弃警告"></a>deprecations：废弃警告</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;deprecations&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;channel&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_DEPRECATIONS_CHANNEL&#x27;</span>, <span class="string">&#x27;null&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;trace&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_DEPRECATIONS_TRACE&#x27;</span>, <span class="literal">false</span>),</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>channel</code></td>
+<td>PHP / Laravel 废弃功能警告写入哪个通道，默认 <code>null</code> 即丢弃</td>
+</tr>
+<tr>
+<td><code>trace</code></td>
+<td>是否记录调用堆栈，方便定位是哪行代码触发了废弃警告</td>
+</tr>
+</tbody></table>
+<p>升级 PHP 或 Laravel 版本前，建议临时打开：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">LOG_DEPRECATIONS_CHANNEL</span>=daily</span><br><span class="line"><span class="attr">LOG_DEPRECATIONS_TRACE</span>=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>另一种方式是直接在 <code>channels</code> 中定义一个名为 <code>deprecations</code> 的通道，<strong>只要存在同<br>名通道，废弃警告就一定会写入它</strong>，优先于上面的配置：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;channels&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;deprecations&#x27;</span> =&gt; [</span><br><span class="line">        <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;single&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;path&#x27;</span> =&gt; <span class="title function_ invoke__">storage_path</span>(<span class="string">&#x27;logs/php-deprecation-warnings.log&#x27;</span>),</span><br><span class="line">    ],</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、默认通道逐个说明"><a href="#四、默认通道逐个说明" class="headerlink" title="四、默认通道逐个说明"></a>四、默认通道逐个说明</h2><h3 id="1-stack：组合通道"><a href="#1-stack：组合通道" class="headerlink" title="1. stack：组合通道"></a>1. stack：组合通道</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;stack&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;stack&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;channels&#x27;</span> =&gt; <span class="title function_ invoke__">explode</span>(<span class="string">&#x27;,&#x27;</span>, (<span class="keyword">string</span>) <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_STACK&#x27;</span>, <span class="string">&#x27;single&#x27;</span>)),</span><br><span class="line">    <span class="string">&#x27;ignore_exceptions&#x27;</span> =&gt; <span class="literal">false</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>driver</code></td>
+<td><code>stack</code> 表示把多个通道组合成一个</td>
+</tr>
+<tr>
+<td><code>channels</code></td>
+<td>要组合的通道列表，Laravel 12 通过 <code>LOG_STACK</code> 逗号分隔配置</td>
+</tr>
+<tr>
+<td><code>ignore_exceptions</code></td>
+<td>某个子通道写入失败时是否忽略异常，<code>false</code> 表示抛出</td>
+</tr>
+</tbody></table>
+<p>关于 <code>ignore_exceptions</code>：</p>
+<ul>
+<li><code>false</code>（默认）：任一子通道抛出异常（如 Slack 网络超时、日志文件无写权限），异<br>常会向上抛出，可能导致当前请求报错</li>
+<li><code>true</code>：吞掉子通道的异常，继续写其他通道，适合包含 Slack 等外部服务的组合，避<br>免 “记录日志失败”反过来影响业务</li>
+</ul>
+<p>例如同时写文件并推送 Slack：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">LOG_STACK</span>=daily,slack</span><br></pre></td></tr></table></figure>
+
+<p><strong>stack 与日志级别的配合</strong></p>
+<p>stack 中的每个子通道都会收到消息，但是否真正写入由各自的 <code>level</code> 决定。官方文档<br>示例：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;channels&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;stack&#x27;</span> =&gt; [</span><br><span class="line">        <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;stack&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;channels&#x27;</span> =&gt; [<span class="string">&#x27;syslog&#x27;</span>, <span class="string">&#x27;slack&#x27;</span>],</span><br><span class="line">        <span class="string">&#x27;ignore_exceptions&#x27;</span> =&gt; <span class="literal">false</span>,</span><br><span class="line">    ],</span><br><span class="line"></span><br><span class="line">    <span class="string">&#x27;syslog&#x27;</span> =&gt; [</span><br><span class="line">        <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;syslog&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;level&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_LEVEL&#x27;</span>, <span class="string">&#x27;debug&#x27;</span>),</span><br><span class="line">        <span class="string">&#x27;facility&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_SYSLOG_FACILITY&#x27;</span>, LOG_USER),</span><br><span class="line">        <span class="string">&#x27;replace_placeholders&#x27;</span> =&gt; <span class="literal">true</span>,</span><br><span class="line">    ],</span><br><span class="line"></span><br><span class="line">    <span class="string">&#x27;slack&#x27;</span> =&gt; [</span><br><span class="line">        <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;slack&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;url&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_SLACK_WEBHOOK_URL&#x27;</span>),</span><br><span class="line">        <span class="string">&#x27;username&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_SLACK_USERNAME&#x27;</span>, <span class="string">&#x27;Laravel Log&#x27;</span>),</span><br><span class="line">        <span class="string">&#x27;emoji&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_SLACK_EMOJI&#x27;</span>, <span class="string">&#x27;:boom:&#x27;</span>),</span><br><span class="line">        <span class="string">&#x27;level&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_LEVEL&#x27;</span>, <span class="string">&#x27;critical&#x27;</span>),</span><br><span class="line">        <span class="string">&#x27;replace_placeholders&#x27;</span> =&gt; <span class="literal">true</span>,</span><br><span class="line">    ],</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Log</span>::<span class="title function_ invoke__">debug</span>(<span class="string">&#x27;An informational message.&#x27;</span>);  <span class="comment">// 只写入 syslog</span></span><br><span class="line"><span class="title class_">Log</span>::<span class="title function_ invoke__">emergency</span>(<span class="string">&#x27;The system is down!&#x27;</span>);     <span class="comment">// syslog 和 slack 都会收到</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>name：通道名称</strong></p>
+<p>Monolog 实例默认使用当前环境名（如 <code>production</code>、<code>local</code>）作为通道名，也就是日志<br>里 <code>production.ERROR:</code> 中的 <code>production</code>。可以通过 <code>name</code> 修改：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;stack&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;stack&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;name&#x27;</span> =&gt; <span class="string">&#x27;channel-name&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;channels&#x27;</span> =&gt; [<span class="string">&#x27;single&#x27;</span>, <span class="string">&#x27;slack&#x27;</span>],</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-single：单文件"><a href="#2-single：单文件" class="headerlink" title="2. single：单文件"></a>2. single：单文件</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;single&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;single&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;path&#x27;</span> =&gt; <span class="title function_ invoke__">storage_path</span>(<span class="string">&#x27;logs/laravel.log&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;level&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_LEVEL&#x27;</span>, <span class="string">&#x27;debug&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;replace_placeholders&#x27;</span> =&gt; <span class="literal">true</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>path</code></td>
+<td>日志文件路径</td>
+</tr>
+<tr>
+<td><code>level</code></td>
+<td>最低记录级别，低于该级别的日志会被忽略</td>
+</tr>
+<tr>
+<td><code>replace_placeholders</code></td>
+<td>是否把消息中的 <code>&#123;key&#125;</code> 替换为上下文中的值</td>
+</tr>
+</tbody></table>
+<p><code>replace_placeholders</code> 示例：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Log</span>::<span class="title function_ invoke__">info</span>(<span class="string">&#x27;用户 &#123;id&#125; 登录成功&#x27;</span>, [<span class="string">&#x27;id&#x27;</span> =&gt; <span class="number">42</span>]);</span><br><span class="line"><span class="comment">// 输出：用户 42 登录成功</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>single 会一直写同一个文件，文件会无限增长，生产环境更推荐 <code>daily</code>。</p>
+</blockquote>
+<h3 id="3-daily：按天切割"><a href="#3-daily：按天切割" class="headerlink" title="3. daily：按天切割"></a>3. daily：按天切割</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;daily&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;daily&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;path&#x27;</span> =&gt; <span class="title function_ invoke__">storage_path</span>(<span class="string">&#x27;logs/laravel.log&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;level&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_LEVEL&#x27;</span>, <span class="string">&#x27;debug&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;days&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_DAILY_DAYS&#x27;</span>, <span class="number">14</span>),</span><br><span class="line">    <span class="string">&#x27;replace_placeholders&#x27;</span> =&gt; <span class="literal">true</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>days</code></td>
+<td>保留最近多少天的日志文件，超过的自动删除，<code>0</code> 为不删除</td>
+</tr>
+</tbody></table>
+<p>生成的文件名形如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">storage/logs/laravel-2026-09-27.log</span><br><span class="line">storage/logs/laravel-2026-09-26.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-slack：推送到-Slack"><a href="#4-slack：推送到-Slack" class="headerlink" title="4. slack：推送到 Slack"></a>4. slack：推送到 Slack</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;slack&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;slack&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;url&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_SLACK_WEBHOOK_URL&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;username&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_SLACK_USERNAME&#x27;</span>, <span class="string">&#x27;Laravel Log&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;emoji&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_SLACK_EMOJI&#x27;</span>, <span class="string">&#x27;:boom:&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;level&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_LEVEL&#x27;</span>, <span class="string">&#x27;critical&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;replace_placeholders&#x27;</span> =&gt; <span class="literal">true</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>url</code></td>
+<td>Slack Incoming Webhook 地址</td>
+</tr>
+<tr>
+<td><code>username</code></td>
+<td>消息发送者显示名称</td>
+</tr>
+<tr>
+<td><code>emoji</code></td>
+<td>发送者头像 emoji</td>
+</tr>
+<tr>
+<td><code>level</code></td>
+<td>一般只推送 <code>critical</code> 及以上的严重错误</td>
+</tr>
+</tbody></table>
+<p><code>url</code> 是必填项，需要先在 Slack 中创建<br><a target="_blank" rel="noopener" href="https://slack.com/apps/A0F7XDUAZ-incoming-webhooks">Incoming Webhook</a>，再配置到<br><code>.env</code>：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">LOG_SLACK_WEBHOOK_URL</span>=https://hooks.slack.com/services/xxx/xxx/xxx</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意 <code>level</code> 读取的也是 <code>LOG_LEVEL</code>，只有 <code>.env</code> 未设置时才默认 <code>critical</code>。新<br>项目 <code>.env</code> 里默认就有 <code>LOG_LEVEL=debug</code>，此时 Slack 会收到所有 debug 日志。建<br>议直接写死 <code>&#39;level&#39; =&gt; &#39;critical&#39;</code>。</p>
+</blockquote>
+<h3 id="5-papertrail：远程日志服务"><a href="#5-papertrail：远程日志服务" class="headerlink" title="5. papertrail：远程日志服务"></a>5. papertrail：远程日志服务</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;papertrail&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;monolog&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;level&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_LEVEL&#x27;</span>, <span class="string">&#x27;debug&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;handler&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_PAPERTRAIL_HANDLER&#x27;</span>, <span class="title class_">SyslogUdpHandler</span>::<span class="variable language_">class</span>),</span><br><span class="line">    <span class="string">&#x27;handler_with&#x27;</span> =&gt; [</span><br><span class="line">        <span class="string">&#x27;host&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;PAPERTRAIL_URL&#x27;</span>),</span><br><span class="line">        <span class="string">&#x27;port&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;PAPERTRAIL_PORT&#x27;</span>),</span><br><span class="line">        <span class="string">&#x27;connectionString&#x27;</span> =&gt; <span class="string">&#x27;tls://&#x27;</span>.<span class="title function_ invoke__">env</span>(<span class="string">&#x27;PAPERTRAIL_URL&#x27;</span>).<span class="string">&#x27;:&#x27;</span>.<span class="title function_ invoke__">env</span>(<span class="string">&#x27;PAPERTRAIL_PORT&#x27;</span>),</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;processors&#x27;</span> =&gt; [<span class="title class_">PsrLogMessageProcessor</span>::<span class="variable language_">class</span>],</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>driver</code></td>
+<td><code>monolog</code> 表示直接使用 Monolog 的 Handler</td>
+</tr>
+<tr>
+<td><code>handler</code></td>
+<td>Monolog Handler 类名</td>
+</tr>
+<tr>
+<td><code>handler_with</code></td>
+<td>传给 Handler 构造函数的参数</td>
+</tr>
+<tr>
+<td><code>processors</code></td>
+<td>日志处理器，<code>PsrLogMessageProcessor</code> 用于替换占位符</td>
+</tr>
+</tbody></table>
+<p><code>host</code> 和 <code>port</code> 必填，从 Papertrail 后台获取后配置：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">PAPERTRAIL_URL</span>=logsN.papertrailapp.com</span><br><span class="line"><span class="attr">PAPERTRAIL_PORT</span>=<span class="number">12345</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6-stderr：标准错误输出"><a href="#6-stderr：标准错误输出" class="headerlink" title="6. stderr：标准错误输出"></a>6. stderr：标准错误输出</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;stderr&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;monolog&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;level&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_LEVEL&#x27;</span>, <span class="string">&#x27;debug&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;handler&#x27;</span> =&gt; <span class="title class_">StreamHandler</span>::<span class="variable language_">class</span>,</span><br><span class="line">    <span class="string">&#x27;handler_with&#x27;</span> =&gt; [</span><br><span class="line">        <span class="string">&#x27;stream&#x27;</span> =&gt; <span class="string">&#x27;php://stderr&#x27;</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;formatter&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_STDERR_FORMATTER&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;processors&#x27;</span> =&gt; [<span class="title class_">PsrLogMessageProcessor</span>::<span class="variable language_">class</span>],</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>stream</code></td>
+<td>输出流，<code>php://stderr</code> 即标准错误</td>
+</tr>
+<tr>
+<td><code>formatter</code></td>
+<td>格式化类，如 <code>Monolog\Formatter\JsonFormatter</code> 输出 JSON</td>
+</tr>
+</tbody></table>
+<p>Docker / K8s 场景推荐使用，日志直接由容器收集：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">LOG_CHANNEL</span>=stderr</span><br><span class="line"><span class="attr">LOG_STDERR_FORMATTER</span>=Monolog\Formatter\JsonFormatter</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-syslog：系统日志"><a href="#7-syslog：系统日志" class="headerlink" title="7. syslog：系统日志"></a>7. syslog：系统日志</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;syslog&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;syslog&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;level&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_LEVEL&#x27;</span>, <span class="string">&#x27;debug&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;facility&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_SYSLOG_FACILITY&#x27;</span>, LOG_USER),</span><br><span class="line">    <span class="string">&#x27;replace_placeholders&#x27;</span> =&gt; <span class="literal">true</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>facility</code></td>
+<td>syslog 设施类型，默认 <code>LOG_USER</code></td>
+</tr>
+</tbody></table>
+<h3 id="8-errorlog：PHP-error-log"><a href="#8-errorlog：PHP-error-log" class="headerlink" title="8. errorlog：PHP error_log"></a>8. errorlog：PHP error_log</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;errorlog&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;errorlog&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;level&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_LEVEL&#x27;</span>, <span class="string">&#x27;debug&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;replace_placeholders&#x27;</span> =&gt; <span class="literal">true</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<p>写入 PHP 的 <code>error_log()</code>，最终位置由 <code>php.ini</code> 中的 <code>error_log</code> 决定，通常会进<br>入 PHP-FPM 或 Web 服务器的错误日志。</p>
+<h3 id="9-null：丢弃日志"><a href="#9-null：丢弃日志" class="headerlink" title="9. null：丢弃日志"></a>9. null：丢弃日志</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;null&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;monolog&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;handler&#x27;</span> =&gt; <span class="title class_">NullHandler</span>::<span class="variable language_">class</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<p>所有写入的日志都被丢弃，常用于测试环境或关闭废弃警告。</p>
+<h3 id="10-emergency：兜底通道"><a href="#10-emergency：兜底通道" class="headerlink" title="10. emergency：兜底通道"></a>10. emergency：兜底通道</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;emergency&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;path&#x27;</span> =&gt; <span class="title function_ invoke__">storage_path</span>(<span class="string">&#x27;logs/laravel.log&#x27;</span>),</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<p>当配置的通道本身出错（比如通道名写错、Slack 地址无法访问）时，Laravel 会把错误写<br>到这里，保证日志不会完全丢失。</p>
+<hr>
+<h2 id="五、通用可选参数"><a href="#五、通用可选参数" class="headerlink" title="五、通用可选参数"></a>五、通用可选参数</h2><h3 id="1-所有通道通用"><a href="#1-所有通道通用" class="headerlink" title="1. 所有通道通用"></a>1. 所有通道通用</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>driver</code></td>
+<td>驱动类型，见文末驱动汇总</td>
+</tr>
+<tr>
+<td><code>level</code></td>
+<td>最低记录级别</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>Monolog 通道名，默认是当前环境名</td>
+</tr>
+<tr>
+<td><code>tap</code></td>
+<td>通道创建后执行的自定义类，用于修改 Monolog 实例</td>
+</tr>
+<tr>
+<td><code>replace_placeholders</code></td>
+<td>是否替换消息中的 <code>&#123;key&#125;</code> 占位符</td>
+</tr>
+</tbody></table>
+<h3 id="2-single-daily-专用"><a href="#2-single-daily-专用" class="headerlink" title="2. single / daily 专用"></a>2. single / daily 专用</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>bubble</code></td>
+<td><code>true</code></td>
+<td>处理后是否继续冒泡给其他通道</td>
+</tr>
+<tr>
+<td><code>locking</code></td>
+<td><code>false</code></td>
+<td>写文件前是否尝试加文件锁</td>
+</tr>
+<tr>
+<td><code>permission</code></td>
+<td><code>0644</code></td>
+<td>日志文件权限</td>
+</tr>
+<tr>
+<td><code>days</code></td>
+<td><code>14</code></td>
+<td>仅 daily，保留天数，也可用 <code>LOG_DAILY_DAYS</code> 设置</td>
+</tr>
+</tbody></table>
+<p><code>permission</code> 很实用：php-fpm 用户和命令行用户不同时，常出现 <code>Permission denied</code><br>无法写日志，可以设置为 <code>0664</code> 并保证两者同组。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;daily&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;daily&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;path&#x27;</span> =&gt; <span class="title function_ invoke__">storage_path</span>(<span class="string">&#x27;logs/laravel.log&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;level&#x27;</span> =&gt; <span class="title function_ invoke__">env</span>(<span class="string">&#x27;LOG_LEVEL&#x27;</span>, <span class="string">&#x27;debug&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;days&#x27;</span> =&gt; <span class="number">14</span>,</span><br><span class="line">    <span class="string">&#x27;permission&#x27;</span> =&gt; <span class="number">0664</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-monolog-驱动专用"><a href="#3-monolog-驱动专用" class="headerlink" title="3. monolog 驱动专用"></a>3. monolog 驱动专用</h3><p><code>monolog</code> 驱动可以直接使用 Monolog 的任意<br><a target="_blank" rel="noopener" href="https://github.com/Seldaek/monolog/tree/main/src/Monolog/Handler">Handler</a>，适<br>合 Laravel 没有内置驱动的场景。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>handler</code></td>
+<td>要实例化的 Monolog Handler 类</td>
+</tr>
+<tr>
+<td><code>handler_with</code></td>
+<td>传给 Handler 构造函数的参数（按参数名匹配）</td>
+</tr>
+<tr>
+<td><code>formatter</code></td>
+<td>格式化类，默认 <code>LineFormatter</code>；设为 <code>default</code> 使用 Handler 自带的格式化</td>
+</tr>
+<tr>
+<td><code>formatter_with</code></td>
+<td>传给格式化类构造函数的参数</td>
+</tr>
+<tr>
+<td><code>processors</code></td>
+<td>写入前对日志进行加工的处理器列表</td>
+</tr>
+</tbody></table>
+<p><strong>handler / handler_with</strong></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;logentries&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span>  =&gt; <span class="string">&#x27;monolog&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;handler&#x27;</span> =&gt; <span class="title class_">Monolog\Handler\SyslogUdpHandler</span>::<span class="variable language_">class</span>,</span><br><span class="line">    <span class="string">&#x27;handler_with&#x27;</span> =&gt; [</span><br><span class="line">        <span class="string">&#x27;host&#x27;</span> =&gt; <span class="string">&#x27;my.logentries.internal.datahubhost.company.com&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;port&#x27;</span> =&gt; <span class="string">&#x27;10000&#x27;</span>,</span><br><span class="line">    ],</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<p><strong>formatter / formatter_with</strong></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;browser&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;monolog&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;handler&#x27;</span> =&gt; <span class="title class_">Monolog\Handler\BrowserConsoleHandler</span>::<span class="variable language_">class</span>,</span><br><span class="line">    <span class="string">&#x27;formatter&#x27;</span> =&gt; <span class="title class_">Monolog\Formatter\HtmlFormatter</span>::<span class="variable language_">class</span>,</span><br><span class="line">    <span class="string">&#x27;formatter_with&#x27;</span> =&gt; [</span><br><span class="line">        <span class="string">&#x27;dateFormat&#x27;</span> =&gt; <span class="string">&#x27;Y-m-d&#x27;</span>,</span><br><span class="line">    ],</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<p>Handler 自带格式化时，设为 <code>default</code>：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;newrelic&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;monolog&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;handler&#x27;</span> =&gt; <span class="title class_">Monolog\Handler\NewRelicHandler</span>::<span class="variable language_">class</span>,</span><br><span class="line">    <span class="string">&#x27;formatter&#x27;</span> =&gt; <span class="string">&#x27;default&#x27;</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<p><strong>processors</strong></p>
+<p>支持两种写法：直接写类名，或者带构造参数的数组形式。可用处理器见<br><a target="_blank" rel="noopener" href="https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor">Monolog Processor</a>。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;memory&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;monolog&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;handler&#x27;</span> =&gt; <span class="title class_">Monolog\Handler\StreamHandler</span>::<span class="variable language_">class</span>,</span><br><span class="line">    <span class="string">&#x27;handler_with&#x27;</span> =&gt; [</span><br><span class="line">        <span class="string">&#x27;stream&#x27;</span> =&gt; <span class="string">&#x27;php://stderr&#x27;</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;processors&#x27;</span> =&gt; [</span><br><span class="line">        <span class="comment">// 简单写法：每条日志附带内存占用</span></span><br><span class="line">        <span class="title class_">Monolog\Processor\MemoryUsageProcessor</span>::<span class="variable language_">class</span>,</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 带参数写法：替换占位符后移除已使用的 context 字段</span></span><br><span class="line">        [</span><br><span class="line">            <span class="string">&#x27;processor&#x27;</span> =&gt; <span class="title class_">Monolog\Processor\PsrLogMessageProcessor</span>::<span class="variable language_">class</span>,</span><br><span class="line">            <span class="string">&#x27;with&#x27;</span> =&gt; [<span class="string">&#x27;removeUsedContextFields&#x27;</span> =&gt; <span class="literal">true</span>],</span><br><span class="line">        ],</span><br><span class="line">    ],</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<p>常用处理器：</p>
+<table>
+<thead>
+<tr>
+<th>处理器</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PsrLogMessageProcessor</code></td>
+<td>替换 <code>&#123;key&#125;</code> 占位符</td>
+</tr>
+<tr>
+<td><code>MemoryUsageProcessor</code></td>
+<td>附带当前内存占用</td>
+</tr>
+<tr>
+<td><code>MemoryPeakUsageProcessor</code></td>
+<td>附带内存峰值</td>
+</tr>
+<tr>
+<td><code>IntrospectionProcessor</code></td>
+<td>附带调用的文件、行号、类、方法</td>
+</tr>
+<tr>
+<td><code>WebProcessor</code></td>
+<td>附带 URL、IP、请求方法等</td>
+</tr>
+<tr>
+<td><code>UidProcessor</code></td>
+<td>附带唯一 ID，便于串联同一请求</td>
+</tr>
+</tbody></table>
+<h3 id="4-custom-驱动专用"><a href="#4-custom-驱动专用" class="headerlink" title="4. custom 驱动专用"></a>4. custom 驱动专用</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>via</code></td>
+<td>工厂类，<code>__invoke</code> 返回 Monolog 实例</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="六、日志级别说明"><a href="#六、日志级别说明" class="headerlink" title="六、日志级别说明"></a>六、日志级别说明</h2><p>Laravel 遵循 RFC 5424 定义的 8 个级别，从低到高：</p>
+<table>
+<thead>
+<tr>
+<th>级别</th>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>debug</code></td>
+<td><code>Log::debug()</code></td>
+<td>调试信息</td>
+</tr>
+<tr>
+<td><code>info</code></td>
+<td><code>Log::info()</code></td>
+<td>普通信息，如用户登录</td>
+</tr>
+<tr>
+<td><code>notice</code></td>
+<td><code>Log::notice()</code></td>
+<td>正常但值得注意的事件</td>
+</tr>
+<tr>
+<td><code>warning</code></td>
+<td><code>Log::warning()</code></td>
+<td>警告，如使用了废弃接口</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td><code>Log::error()</code></td>
+<td>运行时错误</td>
+</tr>
+<tr>
+<td><code>critical</code></td>
+<td><code>Log::critical()</code></td>
+<td>严重错误，如组件不可用</td>
+</tr>
+<tr>
+<td><code>alert</code></td>
+<td><code>Log::alert()</code></td>
+<td>需要立即处理</td>
+</tr>
+<tr>
+<td><code>emergency</code></td>
+<td><code>Log::emergency()</code></td>
+<td>系统不可用</td>
+</tr>
+</tbody></table>
+<p>通道的 <code>level</code> 设为 <code>warning</code> 时，只会记录 <code>warning</code> 及以上的日志。</p>
+<p>生产环境建议：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">LOG_LEVEL</span>=warning</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、常用场景示例"><a href="#七、常用场景示例" class="headerlink" title="七、常用场景示例"></a>七、常用场景示例</h2><h3 id="场景-1：写入指定通道"><a href="#场景-1：写入指定通道" class="headerlink" title="场景 1：写入指定通道"></a>场景 1：写入指定通道</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">Facades</span>\<span class="title">Log</span>;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Log</span>::<span class="title function_ invoke__">channel</span>(<span class="string">&#x27;slack&#x27;</span>)-&gt;<span class="title function_ invoke__">critical</span>(<span class="string">&#x27;支付服务异常&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="场景-2：临时组合多个通道"><a href="#场景-2：临时组合多个通道" class="headerlink" title="场景 2：临时组合多个通道"></a>场景 2：临时组合多个通道</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Log</span>::<span class="title function_ invoke__">stack</span>([<span class="string">&#x27;daily&#x27;</span>, <span class="string">&#x27;slack&#x27;</span>])-&gt;<span class="title function_ invoke__">error</span>(<span class="string">&#x27;订单同步失败&#x27;</span>, [<span class="string">&#x27;order_id&#x27;</span> =&gt; <span class="number">1001</span>]);</span><br></pre></td></tr></table></figure>
+
+<h3 id="场景-3：自定义业务日志通道"><a href="#场景-3：自定义业务日志通道" class="headerlink" title="场景 3：自定义业务日志通道"></a>场景 3：自定义业务日志通道</h3><p>在 <code>channels</code> 中新增：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;order&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;daily&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;path&#x27;</span> =&gt; <span class="title function_ invoke__">storage_path</span>(<span class="string">&#x27;logs/order/order.log&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;level&#x27;</span> =&gt; <span class="string">&#x27;info&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;days&#x27;</span> =&gt; <span class="number">30</span>,</span><br><span class="line">    <span class="string">&#x27;replace_placeholders&#x27;</span> =&gt; <span class="literal">true</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<p>使用：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Log</span>::<span class="title function_ invoke__">channel</span>(<span class="string">&#x27;order&#x27;</span>)-&gt;<span class="title function_ invoke__">info</span>(<span class="string">&#x27;订单 &#123;id&#125; 已创建&#x27;</span>, [<span class="string">&#x27;id&#x27;</span> =&gt; <span class="variable">$order</span>-&gt;id]);</span><br></pre></td></tr></table></figure>
+
+<h3 id="场景-4：不改配置文件，按需创建通道"><a href="#场景-4：不改配置文件，按需创建通道" class="headerlink" title="场景 4：不改配置文件，按需创建通道"></a>场景 4：不改配置文件，按需创建通道</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title class_">Log</span>::<span class="title function_ invoke__">build</span>([</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;single&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;path&#x27;</span> =&gt; <span class="title function_ invoke__">storage_path</span>(<span class="string">&#x27;logs/import.log&#x27;</span>),</span><br><span class="line">])-&gt;<span class="title function_ invoke__">info</span>(<span class="string">&#x27;导入完成&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>按需通道也可以放进 <code>Log::stack</code> 中和已有通道组合：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="variable">$channel</span> = <span class="title class_">Log</span>::<span class="title function_ invoke__">build</span>([</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;single&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;path&#x27;</span> =&gt; <span class="title function_ invoke__">storage_path</span>(<span class="string">&#x27;logs/import.log&#x27;</span>),</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="title class_">Log</span>::<span class="title function_ invoke__">stack</span>([<span class="string">&#x27;slack&#x27;</span>, <span class="variable">$channel</span>])-&gt;<span class="title function_ invoke__">info</span>(<span class="string">&#x27;导入完成&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="场景-5：给日志统一添加上下文"><a href="#场景-5：给日志统一添加上下文" class="headerlink" title="场景 5：给日志统一添加上下文"></a>场景 5：给日志统一添加上下文</h3><p><code>withContext</code> 只作用于<strong>当前默认通道</strong>，<code>shareContext</code> 作用于<strong>所有已创建和之后<br>创建的通道</strong>。常见做法是在中间件中为每个请求生成 request_id：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span>\<span class="title class_">Http</span>\<span class="title class_">Middleware</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Closure</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Http</span>\<span class="title">Request</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">Facades</span>\<span class="title">Log</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">Str</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Symfony</span>\<span class="title">Component</span>\<span class="title">HttpFoundation</span>\<span class="title">Response</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AssignRequestId</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">handle</span>(<span class="params">Request <span class="variable">$request</span>, <span class="built_in">Closure</span> <span class="variable">$next</span></span>): <span class="title">Response</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="variable">$requestId</span> = (<span class="keyword">string</span>) <span class="title class_">Str</span>::<span class="title function_ invoke__">uuid</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 当前通道后续所有日志都带上 request-id</span></span><br><span class="line">        <span class="title class_">Log</span>::<span class="title function_ invoke__">withContext</span>([</span><br><span class="line">            <span class="string">&#x27;request-id&#x27;</span> =&gt; <span class="variable">$requestId</span>,</span><br><span class="line">        ]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如需所有通道都带上，改用 shareContext</span></span><br><span class="line">        <span class="comment">// Log::shareContext([&#x27;request-id&#x27; =&gt; $requestId]);</span></span><br><span class="line"></span><br><span class="line">        <span class="variable">$response</span> = <span class="variable">$next</span>(<span class="variable">$request</span>);</span><br><span class="line"></span><br><span class="line">        <span class="variable">$response</span>-&gt;headers-&gt;<span class="title function_ invoke__">set</span>(<span class="string">&#x27;Request-Id&#x27;</span>, <span class="variable">$requestId</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="variable">$response</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>bootstrap/app.php</code> 中注册：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">-&gt;<span class="title function_ invoke__">withMiddleware</span>(function (Middleware <span class="variable">$middleware</span>) &#123;</span><br><span class="line">    <span class="variable">$middleware</span>-&gt;<span class="title function_ invoke__">append</span>(<span class="title class_">\App\Http\Middleware\AssignRequestId</span>::<span class="variable language_">class</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>队列任务中需要共享上下文时，可以借助<br><a target="_blank" rel="noopener" href="https://laravel.com/framework/docs/12.x/queues#job-middleware">任务中间件</a> 调<br>用 <code>shareContext</code>。</p>
+</blockquote>
+<h3 id="场景-6：使用-tap-自定义格式"><a href="#场景-6：使用-tap-自定义格式" class="headerlink" title="场景 6：使用 tap 自定义格式"></a>场景 6：使用 tap 自定义格式</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// config/logging.php</span></span><br><span class="line"><span class="string">&#x27;daily&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;daily&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;path&#x27;</span> =&gt; <span class="title function_ invoke__">storage_path</span>(<span class="string">&#x27;logs/laravel.log&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;tap&#x27;</span> =&gt; [<span class="title class_">App\Logging\CustomizeFormatter</span>::<span class="variable language_">class</span>],</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span>\<span class="title class_">Logging</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Log</span>\<span class="title">Logger</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Monolog</span>\<span class="title">Formatter</span>\<span class="title">LineFormatter</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomizeFormatter</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params">Logger <span class="variable">$logger</span></span>): <span class="title">void</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="variable">$logger</span>-&gt;<span class="title function_ invoke__">getHandlers</span>() <span class="keyword">as</span> <span class="variable">$handler</span>) &#123;</span><br><span class="line">            <span class="variable">$handler</span>-&gt;<span class="title function_ invoke__">setFormatter</span>(<span class="keyword">new</span> <span class="title class_">LineFormatter</span>(</span><br><span class="line">                <span class="string">&quot;[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n&quot;</span>,</span><br><span class="line">                <span class="string">&#x27;Y-m-d H:i:s&#x27;</span></span><br><span class="line">            ));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>tap</code> 类由服务容器解析，构造函数中的依赖会自动注入。<code>Illuminate\Log\Logger</code> 会把<br>方法调用代理到底层 Monolog 实例，所以可以直接调用<br><code>getHandlers()</code>、<code>pushProcessor()</code> 等。</p>
+<h3 id="场景-7：完全自定义通道（custom-驱动）"><a href="#场景-7：完全自定义通道（custom-驱动）" class="headerlink" title="场景 7：完全自定义通道（custom 驱动）"></a>场景 7：完全自定义通道（custom 驱动）</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;custom&#x27;</span> =&gt; [</span><br><span class="line">    <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;custom&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;via&#x27;</span> =&gt; <span class="title class_">App\Logging\CreateCustomLogger</span>::<span class="variable language_">class</span>,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span>\<span class="title class_">Logging</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Monolog</span>\<span class="title">Logger</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateCustomLogger</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"><span class="keyword">array</span> <span class="variable">$config</span></span>): <span class="title">Logger</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Logger</span>(<span class="comment">/* ... */</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="八、驱动汇总"><a href="#八、驱动汇总" class="headerlink" title="八、驱动汇总"></a>八、驱动汇总</h2><table>
+<thead>
+<tr>
+<th>驱动</th>
+<th>底层 Monolog Handler</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>single</code></td>
+<td><code>StreamHandler</code></td>
+<td>单文件</td>
+</tr>
+<tr>
+<td><code>daily</code></td>
+<td><code>RotatingFileHandler</code></td>
+<td>按天切割文件</td>
+</tr>
+<tr>
+<td><code>stack</code></td>
+<td>-</td>
+<td>组合多个通道</td>
+</tr>
+<tr>
+<td><code>slack</code></td>
+<td><code>SlackWebhookHandler</code></td>
+<td>推送到 Slack Webhook</td>
+</tr>
+<tr>
+<td><code>papertrail</code></td>
+<td><code>SyslogUdpHandler</code></td>
+<td>推送到 Papertrail</td>
+</tr>
+<tr>
+<td><code>syslog</code></td>
+<td><code>SyslogHandler</code></td>
+<td>写入系统 syslog</td>
+</tr>
+<tr>
+<td><code>errorlog</code></td>
+<td><code>ErrorLogHandler</code></td>
+<td>写入 PHP error_log</td>
+</tr>
+<tr>
+<td><code>monolog</code></td>
+<td>任意</td>
+<td>直接使用任意 Monolog Handler</td>
+</tr>
+<tr>
+<td><code>custom</code></td>
+<td>任意</td>
+<td>通过工厂类完全自定义</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="九、使用-Pail-实时查看日志"><a href="#九、使用-Pail-实时查看日志" class="headerlink" title="九、使用 Pail 实时查看日志"></a>九、使用 Pail 实时查看日志</h2><p>Pail 是官方的日志实时查看工具，和 <code>tail</code> 不同的是它支持任意日志驱动（包括<br>Sentry、 Flare），并提供过滤功能。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>需要 PHP 的 <a target="_blank" rel="noopener" href="https://www.php.net/manual/en/book.pcntl.php">PCNTL</a> 扩展。Laravel<br>12 新项目默认已在 <code>require-dev</code> 中包含，没有的话手动安装：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">composer require --dev laravel/pail</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 开始实时查看，Ctrl+C 退出</span></span><br><span class="line">php artisan pail</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示更多内容，避免截断</span></span><br><span class="line">php artisan pail -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最详细输出，包含异常堆栈</span></span><br><span class="line">php artisan pail -vv</span><br></pre></td></tr></table></figure>
+
+<h3 id="过滤参数"><a href="#过滤参数" class="headerlink" title="过滤参数"></a>过滤参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--filter</code></td>
+<td>按类型、文件、消息、堆栈内容过滤</td>
+<td><code>php artisan pail --filter=&quot;QueryException&quot;</code></td>
+</tr>
+<tr>
+<td><code>--message</code></td>
+<td>只按消息内容过滤</td>
+<td><code>php artisan pail --message=&quot;User created&quot;</code></td>
+</tr>
+<tr>
+<td><code>--level</code></td>
+<td>按日志级别过滤</td>
+<td><code>php artisan pail --level=error</code></td>
+</tr>
+<tr>
+<td><code>--user</code></td>
+<td>只显示指定用户 ID 登录期间产生的日志</td>
+<td><code>php artisan pail --user=1</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="十、常见问题"><a href="#十、常见问题" class="headerlink" title="十、常见问题"></a>十、常见问题</h2><p><strong>Q：修改了 <code>.env</code> 里的日志配置没生效？</strong></p>
+<p>多半是配置被缓存了，清理后重新缓存：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">php artisan config:clear</span><br><span class="line">php artisan config:cache</span><br></pre></td></tr></table></figure>
+
+<p><strong>Q：日志文件报 <code>Permission denied</code>？</strong></p>
+<p>php-fpm（如 <code>www-data</code>）和执行 artisan 的用户不同，一方创建的文件另一方无法写入<br>。给通道加上 <code>&#39;permission&#39; =&gt; 0664</code>，并将两个用户加入同一用户组。</p>
+<p><strong>Q：如何实时查看日志？</strong></p>
+<p>推荐使用上文的 <code>php artisan pail</code>，或者直接：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">tail</span> -f storage/logs/laravel-$(<span class="built_in">date</span> +%F).<span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Q：如何控制异常的日志级别或不记录某些异常？</strong></p>
+<p>在 <code>bootstrap/app.php</code> 中配置：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Psr</span>\<span class="title">Log</span>\<span class="title">LogLevel</span>;</span><br><span class="line"></span><br><span class="line">-&gt;<span class="title function_ invoke__">withExceptions</span>(function (Exceptions <span class="variable">$exceptions</span>) &#123;</span><br><span class="line">    <span class="comment">// 指定异常的日志级别</span></span><br><span class="line">    <span class="variable">$exceptions</span>-&gt;<span class="title function_ invoke__">level</span>(<span class="title class_">PDOException</span>::<span class="variable language_">class</span>, <span class="title class_">LogLevel</span>::<span class="variable constant_">CRITICAL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 不记录某些异常</span></span><br><span class="line">    <span class="variable">$exceptions</span>-&gt;<span class="title function_ invoke__">dontReport</span>([</span><br><span class="line">        <span class="title class_">App\Exceptions\BusinessException</span>::<span class="variable language_">class</span>,</span><br><span class="line">    ]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 为所有异常日志添加上下文</span></span><br><span class="line">    <span class="variable">$exceptions</span>-&gt;<span class="title function_ invoke__">context</span>(fn () =&gt; [</span><br><span class="line">        <span class="string">&#x27;user_id&#x27;</span> =&gt; <span class="title function_ invoke__">auth</span>()-&gt;<span class="title function_ invoke__">id</span>(),</span><br><span class="line">    ]);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+    <section id="share">
+      <div class="header"><span>分享文章</span></div>
+      <div class="body">
+        <div class="link"><input class="copy-area" readonly="true" id="copy-link" value="https://sai.thissai.com/2026/09/27/927/" /></div>
+        <div class="social-wrap dis-select"><a class="social share-item link" onclick="util.copy(&quot;copy-link&quot;, &quot;复制成功&quot;)"><img class="lazy"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/8411ed322ced6.svg" /></a></div>
+        
+      </div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/06/11/611/">rclone使用</a></div></section></div>
+
+
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">Sai Wang</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Laravel-12-%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3%EF%BC%9Aconfig-logging-php-%E9%80%90%E9%A1%B9%E8%AF%B4%E6%98%8E"><span class="toc-text">Laravel 12 日志配置详解：config&#x2F;logging.php 逐项说明</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%BD%8D%E7%BD%AE"><span class="toc-text">一、配置文件位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="toc-text">二、配置文件整体结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%A1%B6%E5%B1%82%E9%85%8D%E7%BD%AE"><span class="toc-text">三、顶层配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#default%EF%BC%9A%E9%BB%98%E8%AE%A4%E9%80%9A%E9%81%93"><span class="toc-text">default：默认通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#deprecations%EF%BC%9A%E5%BA%9F%E5%BC%83%E8%AD%A6%E5%91%8A"><span class="toc-text">deprecations：废弃警告</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%BB%98%E8%AE%A4%E9%80%9A%E9%81%93%E9%80%90%E4%B8%AA%E8%AF%B4%E6%98%8E"><span class="toc-text">四、默认通道逐个说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-stack%EF%BC%9A%E7%BB%84%E5%90%88%E9%80%9A%E9%81%93"><span class="toc-text">1. stack：组合通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-single%EF%BC%9A%E5%8D%95%E6%96%87%E4%BB%B6"><span class="toc-text">2. single：单文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-daily%EF%BC%9A%E6%8C%89%E5%A4%A9%E5%88%87%E5%89%B2"><span class="toc-text">3. daily：按天切割</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-slack%EF%BC%9A%E6%8E%A8%E9%80%81%E5%88%B0-Slack"><span class="toc-text">4. slack：推送到 Slack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-papertrail%EF%BC%9A%E8%BF%9C%E7%A8%8B%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A1"><span class="toc-text">5. papertrail：远程日志服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-stderr%EF%BC%9A%E6%A0%87%E5%87%86%E9%94%99%E8%AF%AF%E8%BE%93%E5%87%BA"><span class="toc-text">6. stderr：标准错误输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-syslog%EF%BC%9A%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97"><span class="toc-text">7. syslog：系统日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-errorlog%EF%BC%9APHP-error-log"><span class="toc-text">8. errorlog：PHP error_log</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-null%EF%BC%9A%E4%B8%A2%E5%BC%83%E6%97%A5%E5%BF%97"><span class="toc-text">9. null：丢弃日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-emergency%EF%BC%9A%E5%85%9C%E5%BA%95%E9%80%9A%E9%81%93"><span class="toc-text">10. emergency：兜底通道</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E9%80%9A%E7%94%A8%E5%8F%AF%E9%80%89%E5%8F%82%E6%95%B0"><span class="toc-text">五、通用可选参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%89%80%E6%9C%89%E9%80%9A%E9%81%93%E9%80%9A%E7%94%A8"><span class="toc-text">1. 所有通道通用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-single-daily-%E4%B8%93%E7%94%A8"><span class="toc-text">2. single &#x2F; daily 专用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-monolog-%E9%A9%B1%E5%8A%A8%E4%B8%93%E7%94%A8"><span class="toc-text">3. monolog 驱动专用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-custom-%E9%A9%B1%E5%8A%A8%E4%B8%93%E7%94%A8"><span class="toc-text">4. custom 驱动专用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB%E8%AF%B4%E6%98%8E"><span class="toc-text">六、日志级别说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%B8%B8%E7%94%A8%E5%9C%BA%E6%99%AF%E7%A4%BA%E4%BE%8B"><span class="toc-text">七、常用场景示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF-1%EF%BC%9A%E5%86%99%E5%85%A5%E6%8C%87%E5%AE%9A%E9%80%9A%E9%81%93"><span class="toc-text">场景 1：写入指定通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF-2%EF%BC%9A%E4%B8%B4%E6%97%B6%E7%BB%84%E5%90%88%E5%A4%9A%E4%B8%AA%E9%80%9A%E9%81%93"><span class="toc-text">场景 2：临时组合多个通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF-3%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%9A%E5%8A%A1%E6%97%A5%E5%BF%97%E9%80%9A%E9%81%93"><span class="toc-text">场景 3：自定义业务日志通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF-4%EF%BC%9A%E4%B8%8D%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%8C%E6%8C%89%E9%9C%80%E5%88%9B%E5%BB%BA%E9%80%9A%E9%81%93"><span class="toc-text">场景 4：不改配置文件，按需创建通道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF-5%EF%BC%9A%E7%BB%99%E6%97%A5%E5%BF%97%E7%BB%9F%E4%B8%80%E6%B7%BB%E5%8A%A0%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-text">场景 5：给日志统一添加上下文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF-6%EF%BC%9A%E4%BD%BF%E7%94%A8-tap-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%BC%E5%BC%8F"><span class="toc-text">场景 6：使用 tap 自定义格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF-7%EF%BC%9A%E5%AE%8C%E5%85%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E9%80%9A%E9%81%93%EF%BC%88custom-%E9%A9%B1%E5%8A%A8%EF%BC%89"><span class="toc-text">场景 7：完全自定义通道（custom 驱动）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E9%A9%B1%E5%8A%A8%E6%B1%87%E6%80%BB"><span class="toc-text">八、驱动汇总</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E4%BD%BF%E7%94%A8-Pail-%E5%AE%9E%E6%97%B6%E6%9F%A5%E7%9C%8B%E6%97%A5%E5%BF%97"><span class="toc-text">九、使用 Pail 实时查看日志</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%8F%82%E6%95%B0"><span class="toc-text">过滤参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-text">十、常见问题</span></a></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
