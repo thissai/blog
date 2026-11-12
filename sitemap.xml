@@ -470,7 +470,25 @@
   </url>
   
   <url>
+    <loc>https://sai.thissai.com/2021/02/12/goexample10/</loc>
+    
+    <lastmod>2024-04-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://sai.thissai.com/2021/02/12/goexample2/</loc>
+    
+    <lastmod>2024-04-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://sai.thissai.com/2021/02/12/goexample3/</loc>
     
     <lastmod>2024-04-08</lastmod>
     
@@ -488,25 +506,7 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/2021/02/12/goexample10/</loc>
-    
-    <lastmod>2024-04-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://sai.thissai.com/2021/02/12/goexample5/</loc>
-    
-    <lastmod>2024-04-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://sai.thissai.com/2021/02/12/goexample3/</loc>
     
     <lastmod>2024-04-08</lastmod>
     
@@ -560,7 +560,7 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/2022/06/05/402/</loc>
+    <loc>https://sai.thissai.com/2021/10/30/375/</loc>
     
     <lastmod>2024-04-08</lastmod>
     
@@ -569,7 +569,7 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/2021/10/30/375/</loc>
+    <loc>https://sai.thissai.com/2022/06/05/402/</loc>
     
     <lastmod>2024-04-08</lastmod>
     
@@ -614,6 +614,15 @@
   </url>
   
   <url>
+    <loc>https://sai.thissai.com/2021/11/30/382/</loc>
+    
+    <lastmod>2024-04-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://sai.thissai.com/2018/12/30/175/</loc>
     
     <lastmod>2024-04-08</lastmod>
@@ -624,15 +633,6 @@
   
   <url>
     <loc>https://sai.thissai.com/2021/07/31/360/</loc>
-    
-    <lastmod>2024-04-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://sai.thissai.com/2021/11/30/382/</loc>
     
     <lastmod>2024-04-08</lastmod>
     
@@ -722,7 +722,7 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/2017/11/12/140/</loc>
+    <loc>https://sai.thissai.com/2019/12/01/212/</loc>
     
     <lastmod>2024-04-08</lastmod>
     
@@ -731,7 +731,7 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/2019/12/01/212/</loc>
+    <loc>https://sai.thissai.com/2017/11/12/140/</loc>
     
     <lastmod>2024-04-08</lastmod>
     
@@ -1721,7 +1721,7 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/2021/04/29/333/</loc>
+    <loc>https://sai.thissai.com/2019/04/26/186/</loc>
     
     <lastmod>2022-03-19</lastmod>
     
@@ -1730,7 +1730,7 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/2019/04/26/186/</loc>
+    <loc>https://sai.thissai.com/2021/04/29/333/</loc>
     
     <lastmod>2022-03-19</lastmod>
     
@@ -1829,7 +1829,7 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/2017/12/07/142/</loc>
+    <loc>https://sai.thissai.com/2022/01/29/384/</loc>
     
     <lastmod>2022-03-19</lastmod>
     
@@ -1838,7 +1838,7 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/2022/01/29/384/</loc>
+    <loc>https://sai.thissai.com/2017/12/07/142/</loc>
     
     <lastmod>2022-03-19</lastmod>
     
@@ -2030,14 +2030,14 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/tags/MongoDB/</loc>
+    <loc>https://sai.thissai.com/tags/mysql/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/tags/mysql/</loc>
+    <loc>https://sai.thissai.com/tags/MongoDB/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2100,6 +2100,20 @@
   </url>
   
   <url>
+    <loc>https://sai.thissai.com/tags/go/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://sai.thissai.com/tags/vant/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://sai.thissai.com/tags/macOS/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -2121,14 +2135,7 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/tags/go/</loc>
-    <lastmod>2026-11-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://sai.thissai.com/tags/vant/</loc>
+    <loc>https://sai.thissai.com/tags/gosourcecode/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2136,13 +2143,6 @@
   
   <url>
     <loc>https://sai.thissai.com/tags/html/</loc>
-    <lastmod>2026-11-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://sai.thissai.com/tags/gosourcecode/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2163,13 +2163,6 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/tags/gRPC/</loc>
-    <lastmod>2026-11-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://sai.thissai.com/tags/CI/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -2178,6 +2171,13 @@
   
   <url>
     <loc>https://sai.thissai.com/tags/gogs/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://sai.thissai.com/tags/gRPC/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2338,13 +2338,6 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/tags/gulp/</loc>
-    <lastmod>2026-11-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://sai.thissai.com/tags/consul/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -2353,6 +2346,13 @@
   
   <url>
     <loc>https://sai.thissai.com/tags/SLB/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://sai.thissai.com/tags/gulp/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2380,14 +2380,14 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/tags/web/</loc>
+    <loc>https://sai.thissai.com/tags/webman/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/tags/webman/</loc>
+    <loc>https://sai.thissai.com/tags/web/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2480,14 +2480,14 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/categories/db/</loc>
+    <loc>https://sai.thissai.com/categories/MySQL/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/categories/MySQL/</loc>
+    <loc>https://sai.thissai.com/categories/db/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2529,13 +2529,6 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/categories/macOS/</loc>
-    <lastmod>2026-11-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://sai.thissai.com/categories/debug/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -2550,7 +2543,7 @@
   </url>
   
   <url>
-    <loc>https://sai.thissai.com/categories/web/</loc>
+    <loc>https://sai.thissai.com/categories/macOS/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2558,6 +2551,13 @@
   
   <url>
     <loc>https://sai.thissai.com/categories/gosourcecode/</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://sai.thissai.com/categories/web/</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
